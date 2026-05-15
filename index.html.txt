@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Garret Frazier | Cybersecurity Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Garret Frazier</h1>
+    <h2>Cybersecurity Student | SOC Analyst in Training</h2>
+
+    <p>Welcome to my cybersecurity portfolio. Here you'll find my labs, write-ups, and hands-on projects from my bootcamp.</p>
+
+    <h3>Projects & Labs</h3>
+    <ul>
+        <li><a href="labs/network-analysis.html">Network Analysis Lab</a></li>
+        <li><a href="labs/pki-lab.html">PKI & Certificate Chain Lab</a></li>
+        <li><a href="labs/siem-detection.html">SIEM Detection Lab</a></li>
+    </ul>
+</body>
+</html>
