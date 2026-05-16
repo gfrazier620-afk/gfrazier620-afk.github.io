@@ -323,7 +323,7 @@ footer {
 .cert-card:hover {
     border-color: var(--accent);
     transform: translateY(-3px);
-}}
+}
 
 /* Card Icons */
 .card-icon {
