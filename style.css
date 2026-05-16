@@ -353,3 +353,29 @@ footer {
     margin: 20px auto 20px auto;
     border-radius: 2px;
 }
+
+/* Fade-in Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation-delay: 0.2s;
+}
+
+.card:nth-child(2) {
+    animation-delay: 0.35s;
+}
+
+.card:nth-child(3) {
+    animation-delay: 0.5s;
+}
