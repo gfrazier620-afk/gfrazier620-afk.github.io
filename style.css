@@ -31,41 +31,63 @@ body {
 
 /* Navigation */
 .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
     background-color: var(--bg-color);
     color: var(--text-color);
 }
 
+/* Left side: logo */
 .logo {
+    font-size: 1.4rem;
+    font-weight: bold;
     color: var(--text-color);
+}
+
+/* Right side: nav links + theme toggle */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Nav links */
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin-left: 20px;
 }
 
 .nav-links a {
     color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s ease;
 }
 
 .nav-links a:hover {
     color: var(--accent);
 }
 
-.logo {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #fff;
+/* Theme toggle button */
+.theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: 0.3s ease;
 }
 
-.nav-links li {
-    display: inline-block;
-    margin-left: 20px;
-}
-
-.nav-links a {
-    color: #c9d1d9;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.nav-links a:hover {
-    color: #58a6ff;
+.theme-toggle:hover {
+    color: var(--accent);
 }
 
 /* Hero Section */
