@@ -171,3 +171,39 @@ footer {
     border-color: #58a6ff;
     transform: translateY(-3px);
 }
+
+/* Tools & Technologies Section */
+.tools {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.tools h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.tool-card {
+    background: #161b22;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    text-align: center;
+    font-size: 1rem;
+    color: #c9d1d9;
+    transition: 0.2s ease;
+}
+
+.tool-card:hover {
+    border-color: #58a6ff;
+    transform: translateY(-3px);
+}
