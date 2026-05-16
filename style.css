@@ -1,7 +1,22 @@
+/* Theme Variables */
+:root {
+    --bg-color: #0d1117;
+    --text-color: #c9d1d9;
+    --card-bg: #161b22;
+    --accent: #58ff60;
+}
+
+.light-mode {
+    --bg-color: #f5f5f5;
+    --text-color: #1a1a1a;
+    --card-bg: #ffffff;
+    --accent: #f30000b1;
+}
+
 /* Global */
 body {
-    background: #0d1117;
-    color: #c9d1d9;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -16,12 +31,20 @@ body {
 
 /* Navigation */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background: #161b22;
-    border-bottom: 1px solid #30363d;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.logo {
+    color: var(--text-color);
+}
+
+.nav-links a {
+    color: var(--text-color);
+}
+
+.nav-links a:hover {
+    color: var(--accent);
 }
 
 .logo {
@@ -49,7 +72,7 @@ body {
 .hero {
     text-align: center;
     padding: 80px 20px;
-    background: #0d1117;
+    background: var(--bg-color);
 }
 
 .hero h1 {
@@ -59,7 +82,7 @@ body {
 
 .hero p {
     font-size: 1.2rem;
-    color: #8b949e;
+    color: var(--text-color);
 }
 
 /* Buttons */
@@ -67,15 +90,15 @@ body {
     display: inline-block;
     margin-top: 15px;
     padding: 10px 18px;
-    background: #238636;
-    color: white;
+    background: var(--accent);
+    color: var(--bg-color);
     border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
 }
 
 .btn:hover {
-    background: #2ea043;
+    opacity: 0.85;
 }
 
 /* Section Title */
@@ -92,10 +115,10 @@ body {
 }
 
 .card {
-    background: #161b22;
+    background: var(--card-bg);
     padding: 20px;
     border-radius: 10px;
-    border: 1px solid #30363d;
+    border: 1px solid var(--text-color);
 }
 
 .card h3 {
@@ -103,7 +126,7 @@ body {
 }
 
 .card p {
-    color: #8b949e;
+    color: var(--text-color);
 }
 
 /* Footer */
@@ -127,13 +150,13 @@ footer {
     font-size: 2rem;
     margin-bottom: 20px;
     text-align: center;
-    color: #fff;
+    color: var(--text-color);
 }
 
 .about p {
     margin-bottom: 20px;
     font-size: 1.1rem;
-    color: #c9d1d9;
+    color: var(--text-color);
 }
 
 /* Skills Section */
@@ -147,7 +170,7 @@ footer {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 30px;
-    color: #fff;
+    color: var(--text-color);
 }
 
 .skills-grid {
@@ -157,13 +180,13 @@ footer {
 }
 
 .skill-card {
-    background: #161b22;
+    background: var(--card-bg);
     padding: 15px;
     border-radius: 8px;
-    border: 1px solid #30363d;
+    border: 1px solid var(--text-color);
     text-align: center;
     font-size: 1rem;
-    color: #c9d1d9;
+    color: var(--text-color);
     transition: 0.2s ease;
 }
 
@@ -183,7 +206,7 @@ footer {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 30px;
-    color: #fff;
+    color: var(--text-color);
 }
 
 .tools-grid {
@@ -193,13 +216,13 @@ footer {
 }
 
 .tool-card {
-    background: #161b22;
+    background: var(--card-bg);
     padding: 15px;
     border-radius: 8px;
-    border: 1px solid #30363d;
+    border: 1px solid var(--text-color);
     text-align: center;
     font-size: 1rem;
-    color: #c9d1d9;
+    color: var(--text-color);
     transition: 0.2s ease;
 }
 
@@ -219,12 +242,12 @@ footer {
 .contact h2 {
     font-size: 2rem;
     margin-bottom: 15px;
-    color: #fff;
+    color: var(--text-color);
 }
 
 .contact p {
     font-size: 1.1rem;
-    color: #c9d1d9;
+    color: var(--text-color);
     margin-bottom: 25px;
 }
 
@@ -330,19 +353,19 @@ footer {
     margin-top: 60px;
     padding: 20px 0;
     text-align: center;
-    color: #8b949e;
-    border-top: 1px solid #30363d;
+    color: var(--text-color);
+    border-top: 1px solid var(--text-color);
 }
 
 .footer-links a {
     margin: 0 10px;
     font-size: 1.5rem;
-    color: #8b949e;
+    color: var(--text-color);
     transition: 0.2s ease;
 }
 
 .footer-links a:hover {
-    color: #58a6ff;
+    color: var(--accent);
 }
 
 /* Hero Divider Line */
@@ -390,4 +413,18 @@ footer {
 .show {
     opacity: 1;
     transform: translateY(0);
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--text-color);
+    margin-left: 15px;
+    transition: 0.3s ease;
+}
+
+.theme-toggle:hover {
+    color: var(--accent);
 }
