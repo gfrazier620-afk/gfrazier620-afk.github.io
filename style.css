@@ -324,3 +324,23 @@ footer {
     color: #8b949e;
     border: 1px solid #30363d;
 }
+
+/* Footer */
+.footer {
+    margin-top: 60px;
+    padding: 20px 0;
+    text-align: center;
+    color: #8b949e;
+    border-top: 1px solid #30363d;
+}
+
+.footer-links a {
+    margin: 0 10px;
+    font-size: 1.5rem;
+    color: #8b949e;
+    transition: 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #58a6ff;
+}
