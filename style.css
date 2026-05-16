@@ -114,3 +114,24 @@ footer {
     color: #8b949e;
     border-top: 1px solid #30363d;
 }
+
+/* About Me Section */
+.about {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 0 20px;
+    line-height: 1.7;
+}
+
+.about h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+.about p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: #c9d1d9;
+}
