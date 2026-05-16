@@ -207,3 +207,44 @@ footer {
     border-color: #58a6ff;
     transform: translateY(-3px);
 }
+
+/* Contact Section */
+.contact {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.contact h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.contact p {
+    font-size: 1.1rem;
+    color: #c9d1d9;
+    margin-bottom: 25px;
+}
+
+.contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.contact-btn {
+    padding: 10px 18px;
+    background: #238636;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+.contact-btn:hover {
+    background: #2ea043;
+}
