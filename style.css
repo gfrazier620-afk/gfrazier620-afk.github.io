@@ -291,7 +291,7 @@ footer {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 30px;
-    color: #fff;
+    color: var(--text-color);
 }
 
 .cert-grid {
@@ -301,29 +301,29 @@ footer {
 }
 
 .cert-card {
-    background: #161b22;
+    background: var(--card-bg);
     padding: 20px;
     border-radius: 10px;
-    border: 1px solid #30363d;
+    border: 1px solid var(--text-color);
     text-align: center;
     transition: 0.2s ease;
 }
 
 .cert-card h3 {
     margin: 0 0 10px 0;
-    color: #c9d1d9;
+    color: var(--text-color);
     font-size: 1.2rem;
 }
 
 .cert-card p {
-    color: #8b949e;
+    color: var(--text-color);
     font-size: 1rem;
 }
 
 .cert-card:hover {
-    border-color: #58a6ff;
+    border-color: var(--accent);
     transform: translateY(-3px);
-}
+}}
 
 /* Card Icons */
 .card-icon {
