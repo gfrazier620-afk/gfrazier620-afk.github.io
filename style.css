@@ -451,3 +451,16 @@ footer {
 .theme-toggle:hover {
     color: var(--accent);
 }
+
+/* Sticky Navbar */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+}
+
+/* Navbar Shadow */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
