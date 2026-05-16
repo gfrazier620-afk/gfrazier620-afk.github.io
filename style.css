@@ -256,3 +256,48 @@ footer {
     font-weight: 500;
     letter-spacing: 0.5px;
 }
+
+/* Certifications Section */
+.certifications {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.certifications h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.cert-card {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #30363d;
+    text-align: center;
+    transition: 0.2s ease;
+}
+
+.cert-card h3 {
+    margin: 0 0 10px 0;
+    color: #c9d1d9;
+    font-size: 1.2rem;
+}
+
+.cert-card p {
+    color: #8b949e;
+    font-size: 1rem;
+}
+
+.cert-card:hover {
+    border-color: #58a6ff;
+    transform: translateY(-3px);
+}
