@@ -1,22 +1,116 @@
+/* Global */
 body {
+    background: #0d1117;
+    color: #c9d1d9;
     font-family: Arial, sans-serif;
-    max-width: 800px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+    max-width: 1000px;
     margin: auto;
-    padding: 20px;
-    line-height: 1.6;
-    background-color: #0b1120;
-    color: #e5e7eb;
+    padding: 40px 20px;
 }
 
-h1 {
-    color: #38bdf8;
+/* Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
 }
 
-a {
-    color: #38bdf8;
+.logo {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.nav-links li {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.nav-links a {
+    color: #c9d1d9;
     text-decoration: none;
+    font-weight: 500;
 }
 
-a:hover {
-    text-decoration: underline;
+.nav-links a:hover {
+    color: #58a6ff;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: #0d1117;
+}
+
+.hero h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #8b949e;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 18px;
+    background: #238636;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background: #2ea043;
+}
+
+/* Section Title */
+.section-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+/* Card Layout */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #30363d;
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.card p {
+    color: #8b949e;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    color: #8b949e;
+    border-top: 1px solid #30363d;
 }
