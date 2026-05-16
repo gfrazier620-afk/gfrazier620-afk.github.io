@@ -248,3 +248,11 @@ footer {
 .contact-btn:hover {
     background: #2ea043;
 }
+
+.hero-focus {
+    margin-top: 25px;
+    font-size: 1.1rem;
+    color: #58a6ff;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
