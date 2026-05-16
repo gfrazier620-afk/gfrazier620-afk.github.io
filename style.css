@@ -344,3 +344,12 @@ footer {
 .footer-links a:hover {
     color: #58a6ff;
 }
+
+/* Hero Divider Line */
+.hero-divider {
+    width: 180px;
+    height: 2px;
+    background: linear-gradient(to right, #30363d, #58a6ff, #30363d);
+    margin: 20px auto 20px auto;
+    border-radius: 2px;
+}
