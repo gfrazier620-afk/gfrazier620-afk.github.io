@@ -8,6 +8,7 @@
 
 <body>
 
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="logo">Garret Frazier</div>
         <ul class="nav-links">
@@ -18,27 +19,50 @@
         </ul>
     </nav>
 
-    <div class="container">
-        <h2 class="section-title">Labs</h2>
+    <section class="container">
+        <h1 class="section-title">Labs</h1>
 
         <div class="card-grid">
+
+            <!-- Lab 1 -->
             <div class="card">
-                <h3>Network Analysis Lab</h3>
-                <p>Packet inspection, DNS tunneling detection, and traffic pattern analysis.</p>
-                <a class="btn" href="labs/network-analysis.html">View Lab</a>
+                <div class="card-icon">🛡️</div>
+                <h3>Honeypot & Server Security Lab</h3>
+                <p>Deployed a Windows OpenSSH honeypot, analyzed attacker behavior, and hardened the system using firewall rules and logging.</p>
+                <div class="tags">
+                    <span>System Hardening</span>
+                    <span>SSH</span>
+                    <span>Threat Analysis</span>
+                </div>
+                <a class="btn" href="#">View Lab</a>
             </div>
 
+            <!-- Lab 2 -->
             <div class="card">
-                <h3>SIEM Detection Lab</h3>
-                <p>Created detection rules, analyzed alerts, and built SOC-style investigation reports.</p>
-                <a class="btn" href="labs/siem-detection.html">View Lab</a>
+                <div class="card-icon">📡</div>
+                <h3>Network Traffic Analysis</h3>
+                <p>Captured and analyzed packets using Wireshark to identify suspicious traffic patterns and potential compromise indicators.</p>
+                <div class="tags">
+                    <span>Networking</span>
+                    <span>Wireshark</span>
+                </div>
+                <a class="btn" href="#">View Lab</a>
             </div>
+
+            <!-- Lab 3 -->
+            <div class="card">
+                <div class="card-icon">🔍</div>
+                <h3>Log Analysis & Detection</h3>
+                <p>Investigated Windows event logs, built detection logic, and documented findings for SOC-style reporting.</p>
+                <div class="tags">
+                    <span>SIEM</span>
+                    <span>Detection Engineering</span>
+                </div>
+                <a class="btn" href="#">View Lab</a>
+            </div>
+
         </div>
-    </div>
-
-    <footer>
-        <p>© 2026 Garret Frazier — Cybersecurity Portfolio</p>
-    </footer>
+    </section>
 
 </body>
 </html>

@@ -301,3 +301,26 @@ footer {
     border-color: #58a6ff;
     transform: translateY(-3px);
 }
+
+/* Card Icons */
+.card-icon {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+/* Tags */
+.tags {
+    margin: 15px 0;
+}
+
+.tags span {
+    display: inline-block;
+    background: #21262d;
+    padding: 5px 10px;
+    border-radius: 6px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    color: #8b949e;
+    border: 1px solid #30363d;
+}
