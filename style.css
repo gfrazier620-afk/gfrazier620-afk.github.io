@@ -63,7 +63,6 @@ body {
 
 .nav-links li {
     margin-left: 20px;
-}
 
 .nav-links a {
     color: var(--text-color);
@@ -74,7 +73,9 @@ body {
 
 .nav-links a:hover {
     color: var(--accent);
+}    
 }
+
 
 /* Theme toggle button */
 .theme-toggle {
