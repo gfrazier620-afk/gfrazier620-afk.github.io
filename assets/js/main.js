@@ -1,28 +1,33 @@
-// GSAP NAVBAR ENTRANCE
-gsap.from("#navbar", {
-    y: -80,
-    opacity: 0,
-    duration: 1,
-    ease: "power3.out"
-});
+/* ============================
+   GSAP NAVBAR ENTRANCE
+============================ */
+if (window.gsap) {
+    gsap.from("#navbar", {
+        y: -80,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+    });
 
-// HERO ENTRANCE
-gsap.from(".hero-left", {
-    x: -40,
-    opacity: 0,
-    duration: 1,
-    ease: "power3.out"
-});
+    gsap.from(".hero-left", {
+        x: -40,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+    });
 
-gsap.from(".hero-right", {
-    x: 40,
-    opacity: 0,
-    duration: 1,
-    delay: 0.1,
-    ease: "power3.out"
-});
+    gsap.from(".hero-right", {
+        x: 40,
+        opacity: 0,
+        duration: 1,
+        delay: 0.1,
+        ease: "power3.out"
+    });
+}
 
-// TERMINAL SCRIPT
+/* ============================
+   TERMINAL TYPING SIMULATION
+============================ */
 const terminalLines = [
     "[09:14:03] initializing soc-environment...",
     "[09:14:04] loading log sources: ok",
@@ -56,33 +61,46 @@ let charIndex = 0;
 let currentLine = "";
 let typing = false;
 
+/* Safe, clean syntax highlighting */
 function formatTerminalLine(line) {
-    const tsMatch = line.match(/^
+    if (!line) return "";
+
+    let formatted = line;
+
+    // Timestamp
+    formatted = formatted.replace(/^
 
 \[(.*?)\]
 
-/);
-    let formatted = line;
+/, match =>
+        `<span class="terminal-timestamp">${match}</span>`
+    );
 
-    if (tsMatch) {
-        formatted = formatted.replace(
-            tsMatch[0],
-            `<span class="terminal-timestamp">${tsMatch[0]}</span>`
-        );
-    }
+    // Keywords
+    formatted = formatted.replace(
+        /\b(initializing|loading|ingesting|parsing|correlating|monitoring|running|generating|summary|status)\b/g,
+        `<span class="terminal-keyword">$1</span>`
+    );
 
-    formatted = formatted
-        .replace(/(initializing|loading|ingesting|parsing|correlating|monitoring|running|generating|summary|status)/g,
-            '<span class="terminal-keyword">$1</span>')
-        .replace(/\b(ok|complete|low|stable|none)\b/g,
-            '<span class="terminal-status-ok">$1</span>')
-        .replace(/\b(\d[\d,\.]*)\b/g,
-            '<span class="terminal-metric">$1</span>');
+    // Status words
+    formatted = formatted.replace(
+        /\b(ok|complete|low|stable|none)\b/g,
+        `<span class="terminal-status-ok">$1</span>`
+    );
+
+    // Numbers
+    formatted = formatted.replace(
+        /\b(\d[\d,\.]*)\b/g,
+        `<span class="terminal-metric">$1</span>`
+    );
 
     return formatted;
 }
 
+/* Typing loop */
 function typeTerminal() {
+    if (!terminalOutput) return;
+
     if (!typing) {
         typing = true;
         currentLine = terminalLines[termIndex];
@@ -90,9 +108,10 @@ function typeTerminal() {
     }
 
     const visible = currentLine.substring(0, charIndex);
-    const existing = terminalOutput.innerHTML.split("\n");
-    existing[existing.length - 1] = formatTerminalLine(visible);
-    terminalOutput.innerHTML = existing.join("\n");
+
+    const lines = terminalOutput.innerHTML.split("\n");
+    lines[lines.length - 1] = formatTerminalLine(visible);
+    terminalOutput.innerHTML = lines.join("\n");
 
     charIndex++;
 
@@ -102,12 +121,10 @@ function typeTerminal() {
 
         if (termIndex >= terminalLines.length) {
             setTimeout(() => {
-                terminalOutput.innerHTML = "";
+                terminalOutput.innerHTML = "\n";
                 termIndex = 0;
                 typing = false;
-                currentLine = "";
                 charIndex = 0;
-                terminalOutput.innerHTML = "\n";
                 setTimeout(typeTerminal, 600);
             }, 1500);
             return;
@@ -121,13 +138,17 @@ function typeTerminal() {
     setTimeout(typeTerminal, 70 + Math.random() * 40);
 }
 
+/* Start terminal */
 if (terminalOutput) {
     terminalOutput.innerHTML = "\n";
     setTimeout(typeTerminal, 800);
 }
 
-// PARTICLE BACKGROUND (subtle)
+/* ============================
+   PARTICLE BACKGROUND
+============================ */
 const canvas = document.getElementById("particle-canvas");
+
 if (canvas) {
     const ctx = canvas.getContext("2d");
     let particles = [];
@@ -137,12 +158,10 @@ if (canvas) {
         canvas.height = window.innerHeight;
     }
 
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
     function createParticles() {
         particles = [];
         const count = 24;
+
         for (let i = 0; i < count; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
@@ -173,14 +192,23 @@ if (canvas) {
         requestAnimationFrame(animateParticles);
     }
 
+    window.addEventListener("resize", () => {
+        resizeCanvas();
+        createParticles();
+    });
+
+    resizeCanvas();
     createParticles();
     animateParticles();
 }
 
-// NAVBAR SHRINK ON SCROLL
+/* ============================
+   NAVBAR SHRINK
+============================ */
 window.addEventListener("scroll", () => {
     const navbar = document.getElementById("navbar");
     if (!navbar) return;
+
     if (window.scrollY > 60) {
         navbar.classList.add("shrink");
     } else {
@@ -188,7 +216,9 @@ window.addEventListener("scroll", () => {
     }
 });
 
-// MOBILE MENU TOGGLE
+/* ============================
+   MOBILE MENU
+============================ */
 const hamburger = document.getElementById("hamburger");
 const navLinks = document.getElementById("nav-links");
 
@@ -204,19 +234,23 @@ if (hamburger && navLinks) {
     });
 }
 
-// ScrollReveal for sections
-if (typeof ScrollReveal !== "undefined") {
-    ScrollReveal().reveal('.section-inner', {
+/* ============================
+   SCROLLREVEAL (Safe)
+============================ */
+if (window.ScrollReveal) {
+    ScrollReveal().reveal(".section-inner", {
         delay: 150,
-        distance: '40px',
-        origin: 'bottom',
+        distance: "40px",
+        origin: "bottom",
         duration: 700,
-        easing: 'ease-out',
+        easing: "ease-out",
         interval: 80
     });
 }
 
-// Footer year
+/* ============================
+   FOOTER YEAR
+============================ */
 const yearSpan = document.getElementById("year");
 if (yearSpan) {
     yearSpan.textContent = new Date().getFullYear();
