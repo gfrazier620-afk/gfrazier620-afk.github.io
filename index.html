@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garret Frazier | Cybersecurity Portfolio</title>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="assets/css/styles.css">
@@ -17,143 +17,389 @@
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
-
 <body>
 
     <!-- NAVBAR -->
     <nav id="navbar">
-    <div class="logo">GF</div>
+        <div class="logo">GF</div>
 
-    <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
-    <ul class="nav-links" id="nav-links">
-        <li><a href="#home" class="nav-item">Home</a></li>
-        <li><a href="#projects" class="nav-item">Projects</a></li>
-        <li><a href="#labs" class="nav-item">Labs</a></li>
-        <li><a href="resume.html" class="nav-item">Resume</a></li>
-    </ul>
-</nav>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#home" class="nav-item">Home</a></li>
+            <li><a href="#about" class="nav-item">About</a></li>
+            <li><a href="#labs" class="nav-item">Labs</a></li>
+            <li><a href="#projects" class="nav-item">Projects</a></li>
+            <li><a href="#threat-analysis" class="nav-item">Threat Analysis</a></li>
+            <li><a href="#skills-tools" class="nav-item">Skills & Tools</a></li>
+            <li><a href="#certifications" class="nav-item">Certifications</a></li>
+            <li><a href="#github" class="nav-item">GitHub</a></li>
+            <li><a href="#blog" class="nav-item">Blog</a></li>
+            <li><a href="resume.html" class="nav-item">Resume</a></li>
+        </ul>
+    </nav>
 
+    <!-- HERO -->
     <section id="home" class="hero">
 
-    <!-- Spotlight Glow -->
-    <div class="hero-spotlight"></div>
+        <!-- Background layers -->
+        <canvas id="particle-canvas"></canvas>
+        <div class="hero-grid"></div>
+        <div class="hero-radar"></div>
 
-    <!-- Circuit Lines -->
-    <div class="circuit-lines"></div>
+        <div class="hero-inner">
 
-    <!-- Tactical HUD Panel -->
-    <div class="hud-panel">
-        <p class="hud-title">SYSTEM STATUS</p>
-        <p class="hud-line">• ONLINE</p>
-        <p class="hud-line">• SIGNAL: STABLE</p>
-        <p class="hud-line">• THREAT LEVEL: LOW</p>
-        <p class="hud-line rotating-numbers">4821 • 9934 • 2218</p>
-    </div>
+            <!-- LEFT: Operator profile -->
+            <div class="hero-left">
+                <p class="hero-label">/ profile</p>
+                <h1 class="hero-name">Garret Frazier</h1>
+                <h2 class="hero-role">Aspiring SOC Analyst</h2>
 
-    <!-- Particle Canvas -->
-    <canvas id="particle-canvas"></canvas>
+                <p class="hero-mission">
+                    Driven cybersecurity professional transitioning from a 20-year career in golf, bringing discipline, focus,
+                    and a calm-under-pressure mindset to SOC operations. Committed to developing strong detection, analysis,
+                    and response capabilities while contributing to a team’s defensive mission.
+                </p>
 
-    <!-- Grid Overlay -->
-    <div class="hero-overlay"></div>
+                <div class="hero-cert-block">
+                    <p class="hero-label">/ certifications</p>
+                    <ul class="hero-cert-list">
+                        <li>CompTIA Security+ — <span class="status-pill status-pill--inprogress">In Progress</span></li>
+                        <li>Cisco Networking Academy: Introduction to Cybersecurity — <span class="status-pill">Completed March 2026</span></li>
+                        <li>Fullstack Academy Cybersecurity Program — <span class="status-pill status-pill--inprogress">Graduating August 2026</span></li>
+                    </ul>
+                </div>
 
-    <!-- Hero Content -->
-    <div class="hero-content">
-        <div class="hero-emblem"></div>
+                <div class="hero-cta-row">
+                    <a href="#projects" class="cta-btn primary-cta">View Projects</a>
+                    <a href="#labs" class="cta-btn secondary-cta">View Labs</a>
+                    <a href="resume.html" class="cta-btn ghost-cta">Download Resume</a>
+                </div>
+            </div>
 
-        <h1 class="hero-title">Garret Frazier</h1>
-        <div class="hero-title-underline"></div>
-        <h2 class="hero-subtitle"><span id="typed-text"></span></h2>
-        <p class="hero-tagline">Blue Team • SOC Operations • Threat Detection</p>
+            <!-- RIGHT: Tactical intelligence panel -->
+            <div class="hero-right">
+                <div class="hero-panel hero-panel--terminal">
+                    <div class="panel-header">
+                        <span class="panel-dot dot-red"></span>
+                        <span class="panel-dot dot-yellow"></span>
+                        <span class="panel-dot dot-green"></span>
+                        <span class="panel-title">/ soc-terminal</span>
+                    </div>
+                    <div class="panel-body terminal-body">
+                        <pre id="terminal-output" class="terminal-output"></pre>
+                        <span class="terminal-cursor" id="terminal-cursor"></span>
+                    </div>
+                </div>
 
-        <p class="operator-status">Status: ACTIVE — Monitoring Network Events</p>
+                <div class="hero-panel-grid">
+                    <div class="hero-panel hero-panel--siem">
+                        <div class="panel-header">
+                            <span class="panel-title">/ siem-overview</span>
+                        </div>
+                        <div class="panel-body siem-body">
+                            <div class="siem-metric">
+                                <span class="metric-label">Events (last 60s)</span>
+                                <span class="metric-value" id="events-count">1,284</span>
+                            </div>
+                            <div class="siem-metric">
+                                <span class="metric-label">Alerts</span>
+                                <span class="metric-value metric-value--ok">0 critical • 2 medium</span>
+                            </div>
+                            <div class="siem-graph">
+                                <div class="siem-bar"></div>
+                                <div class="siem-bar"></div>
+                                <div class="siem-bar"></div>
+                                <div class="siem-bar"></div>
+                                <div class="siem-bar"></div>
+                            </div>
+                        </div>
+                    </div>
 
-        <a href="#projects" class="cta-btn">View My Work</a>
-    </div>
+                    <div class="hero-panel hero-panel--network">
+                        <div class="panel-header">
+                            <span class="panel-title">/ network-map</span>
+                        </div>
+                        <div class="panel-body network-body">
+                            <div class="node node-core"></div>
+                            <div class="node node-a"></div>
+                            <div class="node node-b"></div>
+                            <div class="node node-c"></div>
+                            <svg class="network-lines" viewBox="0 0 200 120" preserveAspectRatio="none">
+                                <line x1="100" y1="60" x2="40" y2="20" />
+                                <line x1="100" y1="60" x2="160" y2="30" />
+                                <line x1="100" y1="60" x2="50" y2="100" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Scroll Indicator -->
-    <div class="scroll-indicator">
-        <span>SCROLL</span>
-        <div class="arrow">▼</div>
-    </div>
+                <div class="hero-panel hero-panel--threats">
+                    <div class="panel-header">
+                        <span class="panel-title">/ threat-feed</span>
+                    </div>
+                    <div class="panel-body threat-body">
+                        <div class="threat-ticker" id="threat-ticker">
+                            <span>[CVE-2026-1023] New RCE vulnerability reported in web framework.</span>
+                            <span>Suspicious login attempts blocked from unusual geo-location.</span>
+                            <span>Brute-force activity detected against SSH service — mitigated.</span>
+                            <span>New detection rule deployed: lateral movement pattern v2.4.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-</section>
-
-    <!-- ABOUT ME SECTION -->
-    <section id="about" class="section about-section">
-    <h2 class="section-title">About Me</h2>
-
-    <div class="about-container">
-        <div class="about-text">
-            <p>
-                I’m currently transitioning into the field of cybersecurity after spending 20 years as a golf professional—a career that shaped my work ethic, discipline, and ability to perform under pressure.
-            </p>
-
-            <p>
-                Golf taught me how to stay focused, adapt quickly, and continuously improve. Whether it was coaching players, analyzing performance, or managing high-pressure situations, I developed a mindset built on problem-solving and resilience—skills I now bring into cybersecurity.
-            </p>
-
-            <p>
-                Today, I’m actively training and building hands-on experience in areas like networking, Linux, and security fundamentals. I’m especially interested in entry-level roles where I can contribute, learn, and grow—such as a SOC Analyst or IT support role with a security focus.
-            </p>
-
-            <p>
-                This transition is driven by more than just career growth—it’s about building a stable and meaningful future for my family, while pursuing a field that challenges me every day.
-            </p>
-
-            <p>
-                I’m excited to connect with others in the cybersecurity space, learn from experienced professionals, and continue developing the skills needed to protect systems and data in an ever-evolving landscape.
-            </p>
         </div>
-    </div>
-</section>
 
-    <!-- PROJECTS SECTION -->
-    <section id="projects" class="section">
-        <h2 class="section-title">Projects</h2>
-        <div class="card-container">
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <span>SCROLL</span>
+            <div class="arrow">▼</div>
+        </div>
 
-            <div class="card">
-                <h3>Project Title</h3>
-                <p>Short description of what the project is about.</p>
-                <a class="card-btn">View Project</a>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section section--tactical">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">/ about</p>
+                <h2 class="section-title">About Me</h2>
             </div>
-
-            <div class="card">
-                <h3>Project Title</h3>
-                <p>Short description of what the project is about.</p>
-                <a class="card-btn">View Project</a>
+            <div class="section-grid section-grid--single">
+                <div class="card card--soft">
+                    <p>
+                        I’m transitioning into cybersecurity after a 20-year career as a golf professional—a role that built
+                        my discipline, focus, and ability to perform under pressure.
+                    </p>
+                    <p>
+                        Golf taught me how to analyze performance, adapt quickly, and continuously improve. I now apply that
+                        same mindset to security: understanding systems, identifying weaknesses, and strengthening defenses.
+                    </p>
+                    <p>
+                        I’m actively building hands-on experience in networking, Linux, security fundamentals, and SOC workflows,
+                        with a strong interest in blue team operations, threat detection, and incident response.
+                    </p>
+                    <p>
+                        My goal is to contribute to a security-focused team where I can grow as an analyst, support defensive
+                        operations, and help protect critical systems and data.
+                    </p>
+                </div>
             </div>
-
         </div>
     </section>
 
-    <!-- LABS SECTION -->
+    <!-- LABS -->
     <section id="labs" class="section">
-        <h2 class="section-title">Labs</h2>
-        <div class="card-container">
-
-            <div class="card">
-                <h3>Lab Title</h3>
-                <p>Short description of the lab.</p>
-                <a class="card-btn">View Lab</a>
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">/ labs</p>
+                <h2 class="section-title">Hands-On Labs</h2>
             </div>
-
-            <div class="card">
-                <h3>Lab Title</h3>
-                <p>Short description of the lab.</p>
-                <a class="card-btn">View Lab</a>
+            <div class="section-grid">
+                <div class="card card--lab">
+                    <p class="card-tag">Blue Team</p>
+                    <h3 class="card-title">SIEM Log Analysis Lab</h3>
+                    <p class="card-body">
+                        Investigated simulated security events using a SIEM platform, built detection queries, and created a
+                        summary of suspicious activity.
+                    </p>
+                    <a href="#" class="card-link">View Lab Details</a>
+                </div>
+                <div class="card card--lab">
+                    <p class="card-tag">Network</p>
+                    <h3 class="card-title">Network Traffic Inspection</h3>
+                    <p class="card-body">
+                        Captured and analyzed network traffic to identify anomalies, suspicious connections, and potential indicators of compromise.
+                    </p>
+                    <a href="#" class="card-link">View Lab Details</a>
+                </div>
             </div>
-
         </div>
     </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">/ projects</p>
+                <h2 class="section-title">Projects</h2>
+            </div>
+            <div class="section-grid">
+                <div class="card card--project">
+                    <p class="card-tag">Detection</p>
+                    <h3 class="card-title">Log Parsing & Alerting Script</h3>
+                    <p class="card-body">
+                        Python-based log parser that scans authentication logs for failed login patterns and generates alerts
+                        for potential brute-force attempts.
+                    </p>
+                    <a href="#" class="card-link">View Project</a>
+                </div>
+                <div class="card card--project">
+                    <p class="card-tag">Automation</p>
+                    <h3 class="card-title">Security Baseline Checker</h3>
+                    <p class="card-body">
+                        Scripted checks for basic security configurations on Linux hosts, reporting misconfigurations and missing controls.
+                    </p>
+                    <a href="#" class="card-link">View Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THREAT ANALYSIS -->
+    <section id="threat-analysis" class="section section--tactical">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">/ threat-analysis</p>
+                <h2 class="section-title">Threat Analysis & Notes</h2>
+            </div>
+            <div class="section-grid">
+                <div class="card card--soft">
+                    <h3 class="card-title">Recent CVE Review</h3>
+                    <p class="card-body">
+                        Short writeups on recent vulnerabilities, focusing on impact, exploitation paths, and practical mitigation strategies.
+                    </p>
+                    <a href="#" class="card-link">View Analysis</a>
+                </div>
+                <div class="card card--soft">
+                    <h3 class="card-title">Attack Path Breakdown</h3>
+                    <p class="card-body">
+                        Diagrammed potential attack paths in a small lab environment, mapping how an attacker could move from initial access to impact.
+                    </p>
+                    <a href="#" class="card-link">View Notes</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS & TOOLS -->
+    <section id="skills-tools" class="section">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">/ skills-tools</p>
+                <h2 class="section-title">Skills & Tools</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skills-column">
+                    <h3 class="skills-title">Core Skills</h3>
+                    <ul class="skills-list">
+                        <li>Security fundamentals & blue team mindset</li>
+                        <li>Log analysis & event correlation</li>
+                        <li>Basic incident response workflow</li>
+                        <li>Linux & command line usage</li>
+                        <li>Networking basics (TCP/IP, ports, protocols)</li>
+                    </ul>
+                </div>
+                <div class="skills-column">
+                    <h3 class="skills-title">Tools & Platforms</h3>
+                    <ul class="skills-list">
+                        <li>SIEM platforms (training labs)</li>
+                        <li>Wireshark & packet capture tools</li>
+                        <li>Virtualization (VMware / VirtualBox)</li>
+                        <li>Git & GitHub</li>
+                        <li>Basic scripting (Python, Bash)</li>
+                    </ul>
+                </div>
+                <div class="skills-column">
+                    <h3 class="skills-title">Learning & Growth</h3>
+                    <ul class="skills-list">
+                        <li>Fullstack Academy Cybersecurity Program</li>
+                        <li>Cisco Networking Academy</li>
+                        <li>CompTIA Security+ preparation</li>
+                        <li>Hands-on labs & home lab practice</li>
+                        <li>Continuous learning & documentation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certifications" class="section section--tactical">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">/ certifications</p>
+                <h2 class="section-title">Certifications</h2>
+            </div>
+            <div class="section-grid section-grid--single">
+                <div class="card card--soft">
+                    <ul class="cert-list">
+                        <li>
+                            <span class="cert-name">CompTIA Security+</span>
+                            <span class="cert-status status-pill status-pill--inprogress">In Progress</span>
+                        </li>
+                        <li>
+                            <span class="cert-name">Cisco Networking Academy: Introduction to Cybersecurity</span>
+                            <span class="cert-status status-pill">Completed March 2026</span>
+                        </li>
+                        <li>
+                            <span class="cert-name">Fullstack Academy Cybersecurity Program</span>
+                            <span class="cert-status status-pill status-pill--inprogress">Graduating August 2026</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GITHUB ACTIVITY -->
+    <section id="github" class="section">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">/ github</p>
+                <h2 class="section-title">GitHub Activity</h2>
+            </div>
+            <div class="section-grid section-grid--single">
+                <div class="card card--soft">
+                    <p class="card-body">
+                        This section can highlight recent commits, security-related repositories, or a contribution graph screenshot.
+                        Link directly to your GitHub profile so recruiters can explore your code and activity.
+                    </p>
+                    <a href="#" class="card-link">View GitHub Profile</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BLOG / WRITEUPS -->
+    <section id="blog" class="section section--tactical">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">/ blog</p>
+                <h2 class="section-title">Blog & Writeups</h2>
+            </div>
+            <div class="section-grid">
+                <div class="card card--soft">
+                    <h3 class="card-title">Analyzing a Brute-Force Attack Pattern</h3>
+                    <p class="card-body">
+                        A short writeup on identifying brute-force behavior in logs, what stood out, and how you’d respond as an analyst.
+                    </p>
+                    <a href="#" class="card-link">Read Writeup</a>
+                </div>
+                <div class="card card--soft">
+                    <h3 class="card-title">Lessons from Transitioning into Cybersecurity</h3>
+                    <p class="card-body">
+                        Reflections on moving from golf to security, and how mindset, discipline, and practice carry over.
+                    </p>
+                    <a href="#" class="card-link">Read Post</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p class="footer-text">© <span id="year"></span> Garret Frazier — Building a career in cybersecurity.</p>
+        </div>
+    </footer>
 
     <!-- JS -->
     <script src="assets/js/main.js"></script>
-
 </body>
 </html>
