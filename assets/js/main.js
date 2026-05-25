@@ -87,3 +87,36 @@ document.addEventListener("mousemove", (e) => {
     document.querySelector(".hero-overlay").style.transform =
         `translate(${moveX}px, ${moveY}px)`;
 });
+
+// NAVBAR SHRINK ON SCROLL
+window.addEventListener("scroll", () => {
+    const navbar = document.getElementById("navbar");
+    if (window.scrollY > 60) {
+        navbar.classList.add("shrink");
+    } else {
+        navbar.classList.remove("shrink");
+    }
+});
+
+// MOBILE MENU TOGGLE
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("nav-links");
+
+hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+});
+
+// CLOSE MENU ON LINK CLICK
+document.querySelectorAll(".nav-item").forEach(item => {
+    item.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+    });
+});
+
+// GSAP NAVBAR ENTRANCE
+gsap.from("#navbar", {
+    y: -80,
+    opacity: 0,
+    duration: 1,
+    ease: "power3.out"
+});
