@@ -127,3 +127,17 @@ ScrollReveal().reveal('.about-container', {
     origin: 'bottom',
     duration: 800
 });
+
+// CINEMATIC HERO TIMELINE
+const tl = gsap.timeline();
+
+tl.from(".hero-overlay", { opacity: 0, duration: 1 })
+  .from(".hero-spotlight", { opacity: 0, duration: 1 }, "-=0.5")
+  .from(".circuit-lines", { opacity: 0, duration: 1 }, "-=0.5")
+  .from(".hud-panel", { x: -50, opacity: 0, duration: 1 }, "-=0.5")
+  .from(".hero-emblem", { opacity: 0, scale: 0.8, duration: 1 }, "-=0.5")
+  .from(".hero-title", { y: -40, opacity: 0, duration: 1 })
+  .from(".hero-subtitle", { y: 40, opacity: 0, duration: 1 }, "-=0.5")
+  .from(".operator-status", { opacity: 0, duration: 1 }, "-=0.5")
+  .from(".cta-btn", { scale: 0.8, opacity: 0, duration: 1, ease: "back.out(1.7)" }, "-=0.5")
+  .from(".scroll-indicator", { opacity: 0, duration: 1 }, "-=0.5");
