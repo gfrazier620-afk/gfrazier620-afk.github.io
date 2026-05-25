@@ -120,3 +120,10 @@ gsap.from("#navbar", {
     duration: 1,
     ease: "power3.out"
 });
+
+ScrollReveal().reveal('.about-container', {
+    delay: 200,
+    distance: '40px',
+    origin: 'bottom',
+    duration: 800
+});

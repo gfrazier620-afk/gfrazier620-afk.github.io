@@ -268,3 +268,52 @@ nav ul li a:hover::after {
     text-decoration: none;
     font-weight: 600;
 }
+
+/* ABOUT SECTION */
+.about-section {
+    position: relative;
+}
+
+.about-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 30px;
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid #333;
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 20px rgba(255, 140, 66, 0.08);
+    animation: fadeIn 1s ease forwards;
+}
+
+.about-text p {
+    line-height: 1.7;
+    font-size: 1.1rem;
+    margin-bottom: 18px;
+    color: #d1d1d1;
+}
+
+/* Subtle glowing border on hover */
+.about-container:hover {
+    border-color: #ff8c42;
+    box-shadow: 0 0 25px rgba(255, 140, 66, 0.15);
+    transition: 0.3s ease;
+}
+
+/* Section fade-in */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.about-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ff8c42, transparent);
+    transform: translateX(-50%);
+    opacity: 0.6;
+}
