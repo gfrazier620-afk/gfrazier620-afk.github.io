@@ -4,41 +4,60 @@
     <meta charset="UTF-8">
     <title>Labs | Garret Frazier</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
 
-    <!-- Include your same navbar -->
+    <!-- NAVBAR -->
     <nav id="navbar">
         <div class="logo">GF</div>
-        <ul class="nav-links">
+        <ul class="nav-links" id="nav-links">
             <li><a href="../index.html">Home</a></li>
             <li><a href="../labs/index.html">Labs</a></li>
             <li><a href="../projects/index.html">Projects</a></li>
             <li><a href="../blog/index.html">Blog</a></li>
-            <li><a href="resume.html" class="nav-item">Resume</a></li>
+            <li><a href="../resume.html">Resume</a></li>
         </ul>
     </nav>
 
+    <!-- LABS SECTION -->
     <section class="section">
         <div class="section-inner">
-            <h2 class="section-title">Labs</h2>
-            <p class="section-label">/ hands-on practice</p>
+            <p class="section-label">/ labs</p>
+            <h2 class="section-title">Hands-On Labs</h2>
 
             <div class="section-grid">
+
+                <!-- Example Lab Card -->
                 <a class="card card--lab" href="lab1.html">
                     <p class="card-tag">Blue Team</p>
                     <h3 class="card-title">SIEM Log Analysis</h3>
-                    <p class="card-body">Investigated simulated events using a SIEM platform.</p>
+                    <p class="card-body">
+                        Investigated simulated events using a SIEM platform and built detection queries.
+                    </p>
                 </a>
 
                 <a class="card card--lab" href="lab2.html">
                     <p class="card-tag">Network</p>
                     <h3 class="card-title">Traffic Inspection</h3>
-                    <p class="card-body">Analyzed packet captures for anomalies.</p>
+                    <p class="card-body">
+                        Captured and analyzed packet data to identify anomalies and suspicious behavior.
+                    </p>
                 </a>
+
+                <!-- Add more labs here -->
             </div>
         </div>
     </section>
 
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p class="footer-text">© <span id="year"></span> Garret Frazier — Cybersecurity Portfolio</p>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>
