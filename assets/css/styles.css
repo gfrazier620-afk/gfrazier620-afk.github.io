@@ -356,6 +356,18 @@ nav ul li a:hover::after {
     margin-top: 5px;
 }
 
+.hero-title {
+    opacity: 1 !important;
+}
+
+.hero-title, 
+.hero-subtitle, 
+.operator-status, 
+.cta-btn {
+    position: relative;
+    z-index: 10;
+}
+
 /* SECTIONS */
 .section {
     padding: 100px 40px;
