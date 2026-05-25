@@ -11,6 +11,10 @@ h1, h2, h3 {
     font-family: 'Orbitron', sans-serif;
 }
 
+body, html {
+    overflow-x: hidden;
+}
+
 /* NAVBAR */
 nav {
     position: fixed;
@@ -21,7 +25,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 40px;
+    padding: 18px clamp(20px, 5vw, 40px);
     z-index: 1000;
     border-bottom: 1px solid #ff8c42;
     transition: padding 0.3s ease, background 0.3s ease;
@@ -33,6 +37,10 @@ nav {
     margin: 0 auto;
     width: 100%;
     box-sizing: border-box;
+}
+
+nav {
+    max-width: 100%;
 }
 
 /* SHRINK ON SCROLL */
