@@ -372,6 +372,88 @@ nav ul li a:hover::after {
     text-shadow: 0 0 12px rgba(255, 140, 66, 0.4);
 }
 
+.hero-content {
+    margin-top: -40px;
+}
+
+.hud-panel {
+    left: 25px;
+}
+
+/* NAME ALWAYS VISIBLE */
+.hero-title {
+    opacity: 1 !important;
+    position: relative;
+    z-index: 20;
+    text-shadow: 0 0 12px rgba(255, 140, 66, 0.4);
+}
+
+/* CYBER BRACKETS */
+.hero-title::before,
+.hero-title::after {
+    content: "[";
+    position: absolute;
+    left: -25px;
+    top: 0;
+    color: #ff8c42;
+    opacity: 0.8;
+    font-size: 2.5rem;
+}
+
+.hero-title::after {
+    content: "]";
+    left: auto;
+    right: -25px;
+}
+
+/* UNDERLINE */
+.hero-title-underline {
+    width: 180px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ff8c42, transparent);
+    margin: 10px auto 0;
+    animation: underlineGlow 3s ease-in-out infinite;
+}
+
+@keyframes underlineGlow {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+/* SHIMMER SWEEP */
+.hero-title::after {
+    animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% { text-shadow: 0 0 10px rgba(255,140,66,0.2); }
+    50% { text-shadow: 0 0 20px rgba(255,140,66,0.6); }
+    100% { text-shadow: 0 0 10px rgba(255,140,66,0.2); }
+}
+
+.hero-spotlight {
+    opacity: 0.18; /* was too strong */
+}
+
+.hero-emblem {
+    opacity: 0.04; /* reduced from 0.08 */
+}
+
+.circuit-lines {
+    opacity: 0.03; /* reduced from 0.05–0.08 */
+}
+
+.hero-tagline {
+    margin-top: 8px;
+    font-size: 1.1rem;
+    color: #d1d1d1;
+    opacity: 0.85;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 1px;
+    z-index: 20;
+}
+
 /* SECTIONS */
 .section {
     padding: 100px 40px;
@@ -458,4 +540,63 @@ nav ul li a:hover::after {
     background: linear-gradient(90deg, transparent, #ff8c42, transparent);
     transform: translateX(-50%);
     opacity: 0.6;
+}
+
+/* HUD FRAME */
+.hud-panel {
+    border-left: 2px solid rgba(255, 140, 66, 0.4);
+    padding-left: 15px;
+}
+
+/* BLINKING INDICATOR */
+.hud-line:first-of-type::before {
+    content: "●";
+    color: #ff8c42;
+    margin-right: 8px;
+    animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+/* VERTICAL SCAN */
+.hud-panel::after {
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, #ff8c42, transparent);
+    animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
+
+.scroll-indicator {
+    animation: scrollPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+    0% { opacity: 0.3; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(6px); }
+    100% { opacity: 0.3; transform: translateY(0); }
+}
+
+/* Glowing vertical line */
+.scroll-indicator::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    width: 2px;
+    height: 20px;
+    background: #ff8c42;
+    opacity: 0.4;
+    transform: translateX(-50%);
 }
