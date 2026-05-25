@@ -368,6 +368,10 @@ nav ul li a:hover::after {
     z-index: 10;
 }
 
+.hero-title {
+    text-shadow: 0 0 12px rgba(255, 140, 66, 0.4);
+}
+
 /* SECTIONS */
 .section {
     padding: 100px 40px;
