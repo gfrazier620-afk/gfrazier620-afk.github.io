@@ -1,5 +1,5 @@
 /* ============================
-   GSAP NAVBAR ENTRANCE
+   GSAP NAVBAR + HERO ENTRANCE
 ============================ */
 if (window.gsap) {
     gsap.from("#navbar", {
@@ -54,44 +54,38 @@ const terminalLines = [
 ];
 
 const terminalOutput = document.getElementById("terminal-output");
-const terminalCursor = document.getElementById("terminal-cursor");
-
 let termIndex = 0;
 let charIndex = 0;
 let currentLine = "";
 let typing = false;
 
-/* Safe, clean syntax highlighting */
+/* Syntax highlighting */
 function formatTerminalLine(line) {
     if (!line) return "";
 
     let formatted = line;
 
     // Timestamp
-    formatted = formatted.replace(/^
-
-\[(.*?)\]
-
-/, match =>
+    formatted = formatted.replace(/^(\[.*?\])/, match =>
         `<span class="terminal-timestamp">${match}</span>`
     );
 
     // Keywords
     formatted = formatted.replace(
         /\b(initializing|loading|ingesting|parsing|correlating|monitoring|running|generating|summary|status)\b/g,
-        `<span class="terminal-keyword">$1</span>`
+        '<span class="terminal-keyword">$1</span>'
     );
 
     // Status words
     formatted = formatted.replace(
         /\b(ok|complete|low|stable|none)\b/g,
-        `<span class="terminal-status-ok">$1</span>`
+        '<span class="terminal-status-ok">$1</span>'
     );
 
     // Numbers
     formatted = formatted.replace(
         /\b(\d[\d,\.]*)\b/g,
-        `<span class="terminal-metric">$1</span>`
+        '<span class="terminal-metric">$1</span>'
     );
 
     return formatted;
@@ -108,7 +102,6 @@ function typeTerminal() {
     }
 
     const visible = currentLine.substring(0, charIndex);
-
     const lines = terminalOutput.innerHTML.split("\n");
     lines[lines.length - 1] = formatTerminalLine(visible);
     terminalOutput.innerHTML = lines.join("\n");
