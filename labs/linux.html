@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Linux Commands Lab – Garret Frazier</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+
+  <style>
+    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
+    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
+    .lab-section { margin-bottom: 40px; }
+    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
+    code { color: var(--accent); }
+    ul { margin-left: 20px; }
+  </style>
+</head>
+
+<body>
+
+<nav id="navbar">
+  <div class="logo">GF</div>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a class="active" href="index.html">Labs</a></li>
+    <li><a href="../projects/index.html">Projects</a></li>
+    <li><a href="../blog/index.html">Blog</a></li>
+    <li><a href="../resume.html">Resume</a></li>
+  </ul>
+</nav>
+
+<div class="lab-container">
+
+  <a class="back-btn" href="index.html">← Back to Labs</a>
+
+  <h1>Linux Commands Lab</h1>
+  <p class="subtitle">Master essential Linux commands for SOC and sysadmin work.</p>
+
+  <section class="lab-section">
+    <h2>Objective</h2>
+    <p>Learn core Linux commands used in security operations, log analysis, and system administration.</p>
+  </section>
+
+  <section class="lab-section">
+    <h2>Tools Used</h2>
+    <ul>
+      <li>Linux VM (Ubuntu, Kali, etc.)</li>
+      <li>Terminal</li>
+    </ul>
+  </section>
+
+  <section class="lab-section">
+    <h2>Steps</h2>
+    <ul>
+      <li>List files:
+        <br><code>ls -la</code>
+      </li>
+      <li>Check running processes:
+        <br><code>ps aux</code>
+      </li>
+      <li>Search logs:
+        <br><code>grep "error" /var/log/syslog</code>
+      </li>
+      <li>Check network connections:
+        <br><code>netstat -tulpn</code>
+      </li>
+      <li>View system info:
+        <br><code>uname -a</code>
+      </li>
+    </ul>
+  </section>
+
+  <section class="lab-section">
+    <h2>Summary</h2>
+    <p>This lab builds Linux fundamentals essential for SOC analysts and system administrators.</p>
+  </section>
+
+</div>
+
+</body>
+</html>

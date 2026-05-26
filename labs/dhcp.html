@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DNS Lab – Garret Frazier</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+
+  <style>
+    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
+    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
+    .lab-section { margin-bottom: 40px; }
+    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
+    ul { margin-left: 20px; }
+    code { color: var(--accent); }
+  </style>
+</head>
+
+<body>
+
+<nav id="navbar">
+  <div class="logo">GF</div>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a class="active" href="index.html">Labs</a></li>
+    <li><a href="../projects/index.html">Projects</a></li>
+    <li><a href="../blog/index.html">Blog</a></li>
+    <li><a href="../resume.html">Resume</a></li>
+  </ul>
+</nav>
+
+<div class="lab-container">
+
+  <a class="back-btn" href="index.html">← Back to Labs</a>
+
+  <h1>DNS Lab</h1>
+  <p class="subtitle">Investigate DNS queries, records, and common attack vectors.</p>
+
+  <section class="lab-section">
+    <h2>Objective</h2>
+    <p>Understand how DNS works by querying records and analyzing DNS traffic.</p>
+  </section>
+
+  <section class="lab-section">
+    <h2>Tools Used</h2>
+    <ul>
+      <li>nslookup / dig</li>
+      <li>Wireshark</li>
+    </ul>
+  </section>
+
+  <section class="lab-section">
+    <h2>Steps</h2>
+    <ul>
+      <li>Run <code>nslookup google.com</code> and review the response.</li>
+      <li>Query A, AAAA, MX, TXT, and NS records.</li>
+      <li>Capture DNS traffic in Wireshark.</li>
+      <li>Identify DNS request/response patterns.</li>
+      <li>Review signs of DNS tunneling or exfiltration.</li>
+    </ul>
+  </section>
+
+  <section class="lab-section">
+    <h2>Summary</h2>
+    <p>This lab builds DNS fundamentals and teaches how attackers abuse DNS channels.</p>
+  </section>
+
+</div>
+
+</body>
+</html>

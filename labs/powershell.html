@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PowerShell Lab – Garret Frazier</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+
+  <style>
+    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
+    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
+    .lab-section { margin-bottom: 40px; }
+    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
+    ul { margin-left: 20px; }
+    code { color: var(--accent); }
+  </style>
+</head>
+
+<body>
+
+<nav id="navbar">
+  <div class="logo">GF</div>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a class="active" href="index.html">Labs</a></li>
+    <li><a href="../projects/index.html">Projects</a></li>
+    <li><a href="../blog/index.html">Blog</a></li>
+    <li><a href="../resume.html">Resume</a></li>
+  </ul>
+</nav>
+
+<div class="lab-container">
+
+  <a class="back-btn" href="index.html">← Back to Labs</a>
+
+  <h1>PowerShell Lab</h1>
+  <p class="subtitle">Run system commands, gather logs, and automate tasks.</p>
+
+  <section class="lab-section">
+    <h2>Objective</h2>
+    <p>Use PowerShell to gather system information and automate basic security tasks.</p>
+  </section>
+
+  <section class="lab-section">
+    <h2>Tools Used</h2>
+    <ul>
+      <li>Windows PowerShell</li>
+      <li>Event Log Cmdlets</li>
+    </ul>
+  </section>
+
+  <section class="lab-section">
+    <h2>Steps</h2>
+    <ul>
+      <li>List running processes:
+        <br><code>Get-Process</code>
+      </li>
+      <li>View failed logons:
+        <br><code>Get-EventLog -LogName Security -InstanceId 4625</code>
+      </li>
+      <li>Check network connections:
+        <br><code>Get-NetTCPConnection</code>
+      </li>
+      <li>Create a simple script to automate log collection.</li>
+      <li>Document findings.</li>
+    </ul>
+  </section>
+
+  <section class="lab-section">
+    <h2>Summary</h2>
+    <p>This lab builds PowerShell fundamentals used in Windows security operations.</p>
+  </section>
+
+</div>
+
+</body>
+</html>

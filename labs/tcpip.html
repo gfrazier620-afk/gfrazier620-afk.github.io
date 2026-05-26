@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TCP/IP Lab – Garret Frazier</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+
+  <style>
+    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
+    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
+    .lab-section { margin-bottom: 40px; }
+    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
+    ul { margin-left: 20px; }
+    code { color: var(--accent); }
+  </style>
+</head>
+
+<body>
+
+<nav id="navbar">
+  <div class="logo">GF</div>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a class="active" href="index.html">Labs</a></li>
+    <li><a href="../projects/index.html">Projects</a></li>
+    <li><a href="../blog/index.html">Blog</a></li>
+    <li><a href="../resume.html">Resume</a></li>
+  </ul>
+</nav>
+
+<div class="lab-container">
+
+  <a class="back-btn" href="index.html">← Back to Labs</a>
+
+  <h1>TCP/IP Lab</h1>
+  <p class="subtitle">Analyze packets, ports, and protocols used in network communication.</p>
+
+  <section class="lab-section">
+    <h2>Objective</h2>
+    <p>Understand how TCP/IP works by analyzing packet flow and identifying protocol behavior.</p>
+  </section>
+
+  <section class="lab-section">
+    <h2>Tools Used</h2>
+    <ul>
+      <li>Wireshark</li>
+      <li>Command line tools (ping, tracert, netstat)</li>
+    </ul>
+  </section>
+
+  <section class="lab-section">
+    <h2>Steps</h2>
+    <ul>
+      <li>Run <code>ping google.com</code> and observe ICMP packets.</li>
+      <li>Use <code>tracert</code> to map network hops.</li>
+      <li>Capture traffic in Wireshark and filter by protocol (TCP, UDP, ICMP).</li>
+      <li>Analyze a TCP 3‑way handshake.</li>
+      <li>Identify common ports (80, 443, 22, 53).</li>
+    </ul>
+  </section>
+
+  <section class="lab-section">
+    <h2>Summary</h2>
+    <p>This lab builds core networking knowledge essential for SOC investigations.</p>
+  </section>
+
+</div>
+
+</body>
+</html>
