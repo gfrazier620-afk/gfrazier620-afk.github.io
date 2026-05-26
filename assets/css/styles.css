@@ -352,6 +352,13 @@ nav ul li a:hover::after {
     color: rgba(229, 233, 240, 0.9);
 }
 
+.btn,
+.btn-primary,
+.btn-secondary {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
 /* RIGHT PANEL LAYOUT */
 .hero-right {
     display: grid;
