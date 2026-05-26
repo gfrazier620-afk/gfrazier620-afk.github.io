@@ -10,7 +10,7 @@
 
   <style>
     .resume-container {
-      max-width: 900px;
+      max-width: 1100px;
       margin: 120px auto 60px;
       padding: 0 20px;
     }
@@ -21,6 +21,11 @@
     }
 
     .resume-header h1 {
+      margin-bottom: 6px;
+    }
+
+    .resume-header p {
+      opacity: 0.85;
       margin-bottom: 10px;
     }
 
@@ -41,8 +46,21 @@
       color: #000;
     }
 
+    /* ======== HYBRID LAYOUT ======== */
+    .resume-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 40px;
+    }
+
+    @media (max-width: 900px) {
+      .resume-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .resume-section {
-      margin-bottom: 40px;
+      margin-bottom: 35px;
     }
 
     .resume-section h2 {
@@ -50,15 +68,16 @@
       margin-bottom: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding-bottom: 6px;
+      font-size: 1.2rem;
     }
 
     .job {
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     .job-title {
       font-weight: bold;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
 
     .job-meta {
@@ -75,7 +94,7 @@
 
 <body>
 
-<!-- ======== MAIN NAVBAR ======== -->
+<!-- ======== NAVBAR ======== -->
 <nav id="navbar">
   <div class="logo">GF</div>
   <ul class="nav-links" id="nav-links">
@@ -92,80 +111,110 @@
 
   <div class="resume-header">
     <h1>Garret Frazier</h1>
-    <p>Irvine, CA • gfrazier620@gmail.com • (949) 943‑4221</p>
+    <p>SOC Analyst</p>
+    <p>(949) 943‑4221 • gfrazier620@gmail.com • Irvine, CA (Open to Relocation)</p>
+    <p>linkedin.com/in/garret-frazier-a40892142</p>
 
     <a class="download-btn" href="assets/Garret_Frazier_Resume.pdf" download>
       ⬇ Download PDF Resume
     </a>
   </div>
 
-  <!-- ======== SUMMARY ======== -->
-  <section class="resume-section">
-    <h2>Professional Summary</h2>
-    <p>
-      Aspiring cybersecurity professional with strong hands-on experience in networking, system operations, threat detection,
-      and incident response fundamentals. Transitioning from a 20-year career as a golf professional, bringing exceptional
-      communication, problem-solving, and technical troubleshooting skills. Currently completing a cybersecurity bootcamp
-      with 40+ labs in Linux, SIEM monitoring, log analysis, and security operations.
-    </p>
-  </section>
+  <!-- ======== HYBRID GRID ======== -->
+  <div class="resume-grid">
 
-  <!-- ======== SKILLS ======== -->
-  <section class="resume-section">
-    <h2>Technical Skills</h2>
-    <ul>
-      <li><strong>Security:</strong> SIEM monitoring, threat detection, vulnerability awareness, incident response concepts</li>
-      <li><strong>Networking:</strong> TCP/IP, DNS, DHCP, routing fundamentals</li>
-      <li><strong>Systems:</strong> Windows, Linux, command line, virtual machines</li>
-      <li><strong>Tools:</strong> CRM systems, POS systems, analytics platforms, scheduling software</li>
-      <li><strong>Professional:</strong> Documentation, customer support, troubleshooting, cross-team collaboration</li>
-    </ul>
-  </section>
+    <!-- ======== LEFT COLUMN ======== -->
+    <div>
 
-  <!-- ======== EXPERIENCE ======== -->
-  <section class="resume-section">
-    <h2>Experience</h2>
+      <section class="resume-section">
+        <h2>Summary</h2>
+        <p>
+          Transitioning into cybersecurity after two decades as a golf professional, bringing a proven record of
+          high‑pressure decision‑making, technical troubleshooting, and data‑driven analysis. Currently completing the
+          Fullstack Academy Cybersecurity Program with hands‑on experience in Linux, networking, SIEM monitoring,
+          threat detection, and system hardening. Motivated by building a stable future for my family while pursuing a
+          field that challenges me daily.
+        </p>
+      </section>
 
-    <div class="job">
-      <div class="job-title">Master Club Fitter – Cool Clubs</div>
-      <div class="job-meta">Irvine, CA • April 2025 – Present</div>
-      <ul>
-        <li>Resolved 95%+ of equipment and system issues without escalation, preventing $25,000+ in annual downtime.</li>
-        <li>Contributed to $300,000+ in annual fitting-related revenue.</li>
-        <li>Maintained 100% accuracy in documentation and reduced workflow delays by 20%.</li>
-      </ul>
+      <section class="resume-section">
+        <h2>Core Skills</h2>
+        <ul>
+          <li>Threat Detection • Log Analysis • Incident Response Concepts • Vulnerability Assessment</li>
+          <li>Security Monitoring • TCP/IP • DNS • DHCP • Endpoint Security • Access Control</li>
+          <li>Splunk • Sentinel • Wireshark • Linux • Windows • Bash • PowerShell</li>
+          <li>Virtual Machines • ServiceNow • Jira</li>
+        </ul>
+      </section>
+
+      <section class="resume-section">
+        <h2>Certifications</h2>
+        <ul>
+          <li>CompTIA Security+ (In progress, expected August 2026)</li>
+          <li>Cisco Cybersecurity Certificate (March 2026)</li>
+          <li>Leadership Training – IC PREP (August 2021)</li>
+        </ul>
+      </section>
+
+      <section class="resume-section">
+        <h2>Education</h2>
+        <ul>
+          <li><strong>Fullstack Academy – Cybersecurity Program</strong> (March 2026 – Present)</li>
+          <li>Completed 40+ hands‑on labs in Linux, networking, SIEM monitoring, threat detection, and IR.</li>
+          <li>Performed log analysis on 1,000+ event samples, identifying anomalies and security issues.</li>
+          <li>Built and managed multiple VMs for security testing and system hardening.</li>
+          <li>Conducted packet analysis, access control configuration, and vulnerability scanning.</li>
+        </ul>
+      </section>
+
     </div>
 
-    <div class="job">
-      <div class="job-title">Golf Professional – Santa Ana Country Club</div>
-      <div class="job-meta">Santa Ana, CA • Oct 2024 – Apr 2025</div>
-      <ul>
-        <li>Resolved 80–90% of POS and booking software issues on first contact.</li>
-        <li>Improved team efficiency by 15% and reduced operational errors costing $1,000+ monthly.</li>
-      </ul>
+    <!-- ======== RIGHT COLUMN ======== -->
+    <div>
+
+      <section class="resume-section">
+        <h2>Experience</h2>
+
+        <div class="job">
+          <div class="job-title">Master Club Fitter – Cool Clubs</div>
+          <div class="job-meta">Irvine, CA • April 2025 – April 2026</div>
+          <ul>
+            <li>Diagnosed 200+ equipment and technology issues using launch monitors, sensors, and analytic software.</li>
+            <li>Analyzed thousands of performance data points to identify patterns and recommend solutions, contributing to $150,000+ in sales.</li>
+            <li>Delivered clear technical explanations to 150+ clients, improving understanding and decision‑making.</li>
+            <li>Documented fittings and equipment specs with 100% accuracy.</li>
+            <li>Collaborated with internal teams to resolve equipment and software issues, improving workflow efficiency.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-title">Golf Professional – Santa Ana Country Club</div>
+          <div class="job-meta">Santa Ana, CA • Oct 2024 – Apr 2025</div>
+          <ul>
+            <li>Provided high‑level customer support to 400+ members, including POS and booking software troubleshooting.</li>
+            <li>Managed daily operations for 100–200 players per day, supporting $15,000–$25,000 in daily revenue.</li>
+            <li>Trained 10+ staff members.</li>
+            <li>Documented service issues and escalated technical problems, improving resolution time by 20–30%.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-title">1st Assistant Golf Professional / Operations Lead – Oak Creek Golf Club</div>
+          <div class="job-meta">Irvine, CA • Jun 2014 – Nov 2023</div>
+          <ul>
+            <li>Coordinated 200+ tournaments annually, supporting revenue streams exceeding $5M per year.</li>
+            <li>Troubleshot hundreds of hardware/software issues across POS systems and operational tools.</li>
+            <li>Maintained detailed documentation of events and procedures, supporting consistent operations.</li>
+            <li>Facilitated cross‑department communication to resolve operational and technical issues.</li>
+            <li>Delivered instruction to 1,000+ students, contributing to $300,000+ in lesson revenue.</li>
+          </ul>
+        </div>
+
+      </section>
+
     </div>
 
-    <div class="job">
-      <div class="job-title">1st Assistant Golf Professional – Oak Creek Golf Club</div>
-      <div class="job-meta">Irvine, CA • Jun 2014 – Nov 2023</div>
-      <ul>
-        <li>Coordinated 100+ tournaments annually generating $500,000+ in revenue.</li>
-        <li>Reduced downtime by 30%, preserving $50,000+ in operational efficiency.</li>
-        <li>Improved response times by 25% through optimized workflows.</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ======== EDUCATION ======== -->
-  <section class="resume-section">
-    <h2>Education</h2>
-    <ul>
-      <li><strong>Fullstack Academy – Cybersecurity Bootcamp</strong> (Expected Aug 2026)</li>
-      <li><strong>Cisco Networking Academy – Introduction to Cybersecurity</strong> (Completed Mar 2026)</li>
-      <li><strong>California State University San Marcos – Bachelor's Degree</strong></li>
-    </ul>
-  </section>
-
+  </div>
 </div>
 
 </body>
