@@ -691,6 +691,12 @@ nav ul li a:hover::after {
     box-shadow: 0 0 22px rgba(136, 192, 208, 0.25);
 }
 
+.card--project,
+.card--project:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
 /* SKILLS GRID */
 .skills-grid {
     display: grid;
