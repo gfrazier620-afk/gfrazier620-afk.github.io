@@ -1,81 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Linux Commands Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    code { color: var(--accent); }
-    ul { margin-left: 20px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Command Line for Investigations | Labs | Garret Frazier</title>
+    <meta name="description" content="Parse auth.log for SSH brute force, review users, processes, and listeners, and hunt for persistence.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>Systems</li></ol>
+                <h1>Linux Command Line for Investigations</h1>
+                <p class="doc-lead">Most servers run Linux. I practiced the commands an analyst uses to answer the questions that come up on a Linux host: who logged in, who tried to, what's running, and what changed.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">Linux</li><li class="tag">Bash</li><li class="tag">auth.log</li><li class="tag">T1110</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Ubuntu + Kali VMs</dd></div><div><dt>Tools</dt><dd>grep, awk, ss, journalctl, find</dd></div><div><dt>Focus</dt><dd>Log parsing & host triage</dd></div><div><dt>ATT&amp;CK</dt><dd>T1110 Brute Force, T1053.003 Cron</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#walkthrough">Walkthrough</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>Linux Commands Lab</h1>
-  <p class="subtitle">Master essential Linux commands for SOC and sysadmin work.</p>
+                <article class="doc">
+<section id="walkthrough">
+<h2>Walkthrough</h2>
+<ol class="steps">
+<li><strong>Top IPs failing SSH logins</strong><p>A one-line pipeline that turns <code>auth.log</code> into a ranked list of attackers.</p><pre><code>grep &quot;Failed password&quot; /var/log/auth.log \
+  | awk &#x27;{print $(NF-3)}&#x27; | sort | uniq -c | sort -nr | head</code></pre></li>
+<li><strong>Did any of them get in?</strong><pre><code>grep &quot;Accepted&quot; /var/log/auth.log
+last -a | head
+sudo lastb | head          # failed logins</code></pre></li>
+<li><strong>Same data through systemd</strong><pre><code>journalctl -u ssh --since &quot;1 hour ago&quot;</code></pre></li>
+<li><strong>Users and privileges</strong><p>Look for unexpected accounts with a login shell, or UID 0.</p><pre><code>awk -F: &#x27;$3 == 0 || $7 ~ /bash|sh$/ {print $1, $3, $7}&#x27; /etc/passwd
+sudo -l
+getent group sudo</code></pre></li>
+<li><strong>Processes and listeners</strong><pre><code>ps aux --sort=-%cpu | head
+ss -tulpn</code></pre></li>
+<li><strong>Hunt for persistence and tampering</strong><pre><code>crontab -l; ls -la /etc/cron.*
+find / -perm -4000 -type f 2&gt;/dev/null     # SUID binaries
+find /etc -mtime -1 -type f                # changed in last 24h</code></pre></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Learn core Linux commands used in security operations, log analysis, and system administration.</p>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li><code>grep | awk | sort | uniq -c</code> is the analyst's Swiss army knife for any text log.</li><li>An unexpected UID 0 account or a new SUID binary is a critical finding.</li><li>Cron is the Linux equivalent of a Windows scheduled task, and an equally common persistence spot.</li></ul>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>Linux VM (Ubuntu, Kali, etc.)</li>
-      <li>Terminal</li>
-    </ul>
-  </section>
+                    <nav class="doc-nav" aria-label="More labs"><a href="powershell.html"><span>&larr; Previous</span>PowerShell for Windows Triage</a><a href="accesscontrol.html"><span>Next &rarr;</span>Access Control & Least Privilege</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>List files:
-        <br><code>ls -la</code>
-      </li>
-      <li>Check running processes:
-        <br><code>ps aux</code>
-      </li>
-      <li>Search logs:
-        <br><code>grep "error" /var/log/syslog</code>
-      </li>
-      <li>Check network connections:
-        <br><code>netstat -tulpn</code>
-      </li>
-      <li>View system info:
-        <br><code>uname -a</code>
-      </li>
-    </ul>
-  </section>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab builds Linux fundamentals essential for SOC analysts and system administrators.</p>
-  </section>
-
-</div>
-
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

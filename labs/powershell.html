@@ -1,77 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PowerShell Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    ul { margin-left: 20px; }
-    code { color: var(--accent); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell for Windows Triage | Labs | Garret Frazier</title>
+    <meta name="description" content="Pull processes with command lines, parse failed logons, map connections, and check common persistence spots.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>Systems</li></ol>
+                <h1>PowerShell for Windows Triage</h1>
+                <p class="doc-lead">I used PowerShell to gather in a few minutes the evidence an analyst needs from a Windows host: what's running, who's been trying to log in, what's talking out, and what's set to start automatically.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">PowerShell</li><li class="tag">Windows</li><li class="tag">Triage</li><li class="tag">T1547</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Windows 10 / Server (admin shell)</dd></div><div><dt>Tools</dt><dd>PowerShell 5.1 / 7</dd></div><div><dt>Focus</dt><dd>Live response & automation</dd></div><div><dt>ATT&amp;CK</dt><dd>T1547 Boot/Logon Autostart, T1053 Scheduled Task</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#walkthrough">Walkthrough</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>PowerShell Lab</h1>
-  <p class="subtitle">Run system commands, gather logs, and automate tasks.</p>
+                <article class="doc">
+<section id="walkthrough">
+<h2>Walkthrough</h2>
+<ol class="steps">
+<li><strong>Processes, with command lines</strong><p><code>Get-Process</code> doesn't show command lines. CIM does, and that's where encoded or odd arguments show up.</p><pre><code>Get-CimInstance Win32_Process |
+    Select-Object ProcessId, ParentProcessId, Name, CommandLine |
+    Sort-Object Name</code></pre></li>
+<li><strong>Failed logons in the last 24 hours, grouped by source IP</strong><p><code>Get-WinEvent</code> replaces the older <code>Get-EventLog</code>. Parsing the event XML pulls out the source IP field.</p><pre><code>Get-WinEvent -FilterHashtable @{LogName=&#x27;Security&#x27;; Id=4625; StartTime=(Get-Date).AddDays(-1)} |
+    ForEach-Object { ([xml]$_.ToXml()).Event.EventData.Data |
+        Where-Object Name -eq &#x27;IpAddress&#x27; } |
+    Group-Object &#x27;#text&#x27; | Sort-Object Count -Descending</code></pre></li>
+<li><strong>Active network connections and their owners</strong><pre><code>Get-NetTCPConnection -State Established |
+    Select-Object LocalPort, RemoteAddress, RemotePort,
+        @{n=&#x27;Process&#x27;;e={(Get-Process -Id $_.OwningProcess).Name}}</code></pre></li>
+<li><strong>Check common persistence locations</strong><pre><code>Get-ItemProperty &#x27;HKLM:\Software\Microsoft\Windows\CurrentVersion\Run&#x27;
+Get-ItemProperty &#x27;HKCU:\Software\Microsoft\Windows\CurrentVersion\Run&#x27;
+Get-ScheduledTask | Where-Object State -eq &#x27;Ready&#x27; |
+    Select-Object TaskName, TaskPath
+Get-LocalGroupMember Administrators</code></pre></li>
+<li><strong>Automate it into a triage script</strong><p>Wrapped the checks into a script that writes CSVs to a timestamped folder, so collection is consistent every time.</p><pre><code>$out = &quot;C:\Triage\$(Get-Date -Format yyyyMMdd-HHmm)&quot;
+New-Item -ItemType Directory -Path $out | Out-Null
+Get-CimInstance Win32_Process | Select-Object ProcessId, Name, CommandLine |
+    Export-Csv &quot;$out\processes.csv&quot; -NoTypeInformation
+Get-NetTCPConnection | Export-Csv &quot;$out\connections.csv&quot; -NoTypeInformation
+Get-LocalGroupMember Administrators | Export-Csv &quot;$out\admins.csv&quot; -NoTypeInformation</code></pre></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Use PowerShell to gather system information and automate basic security tasks.</p>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li>Parent-child process relationships matter: <code>winword.exe</code> spawning <code>powershell.exe</code> is a classic red flag.</li><li>Scripted collection is faster and repeatable, and it doesn't miss steps under pressure.</li><li>Run Keys and scheduled tasks are the first places to look for persistence.</li></ul>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>Windows PowerShell</li>
-      <li>Event Log Cmdlets</li>
-    </ul>
-  </section>
+                    <nav class="doc-nav" aria-label="More labs"><a href="dhcp.html"><span>&larr; Previous</span>DHCP & Rogue Server Detection</a><a href="linux.html"><span>Next &rarr;</span>Linux Command Line for Investigations</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>List running processes:
-        <br><code>Get-Process</code>
-      </li>
-      <li>View failed logons:
-        <br><code>Get-EventLog -LogName Security -InstanceId 4625</code>
-      </li>
-      <li>Check network connections:
-        <br><code>Get-NetTCPConnection</code>
-      </li>
-      <li>Create a simple script to automate log collection.</li>
-      <li>Document findings.</li>
-    </ul>
-  </section>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab builds PowerShell fundamentals used in Windows security operations.</p>
-  </section>
-
-</div>
-
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

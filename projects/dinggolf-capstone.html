@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DING Golf SIEM &amp; Attack-Chain Lab | Projects | Garret Frazier</title>
+    <meta name="description" content="Capstone security lab: a full phishing-to-ransomware attack chain in an isolated VM network, detected end to end with 18 custom Wazuh SIEM rules and a 9-panel SOC dashboard.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="index.html" aria-current="page">Projects</a></li>
+                <li><a href="../labs/index.html">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Projects</a></li><li>Capstone &middot; Detection Engineering</li></ol>
+                <h1>DING Golf: Detecting a Full Attack Chain with a SIEM</h1>
+                <p class="doc-lead">
+                    My Fullstack Academy capstone: I built an isolated four-VM lab, ran a realistic phishing-to-ransomware
+                    attack against a fictional company end to end, and &mdash; the real point of the project &mdash; detected
+                    every stage of it with 18 custom Wazuh rules and a live SOC dashboard.
+                </p>
+                <ul class="tag-list" style="margin-bottom:28px">
+                    <li class="tag">Wazuh SIEM</li><li class="tag">Detection engineering</li><li class="tag">File Integrity Monitoring</li>
+                    <li class="tag">Windows auditing</li><li class="tag">MITRE ATT&amp;CK</li><li class="tag">VirtualBox</li>
+                </ul>
+                <dl class="doc-meta">
+                    <div><dt>Context</dt><dd>Fullstack Academy &middot; solo capstone</dd></div>
+                    <div><dt>Role</dt><dd>Built red &amp; blue; focus on blue</dd></div>
+                    <div><dt>SIEM</dt><dd>Wazuh 4.14.7, 2 Windows agents</dd></div>
+                    <div><dt>Environment</dt><dd>4 VMs, host-only network</dd></div>
+                </dl>
+            </div>
+
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol>
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#ethics">Scope &amp; ethics</a></li>
+                        <li><a href="#architecture">Lab architecture</a></li>
+                        <li><a href="#chain">The attack chain</a></li>
+                        <li><a href="#detection">Detection engineering</a></li>
+                        <li><a href="#attack">ATT&amp;CK mapping</a></li>
+                        <li><a href="#takeaways">Takeaways</a></li>
+                    </ol>
+                </nav>
+
+                <article class="doc">
+
+                    <section id="overview">
+                        <h2>Overview</h2>
+                        <p>
+                            The goal of this capstone was to understand an attack well enough to <em>catch</em> it. Rather
+                            than study one stage in isolation, I built the whole kill chain against a fictional company,
+                            <strong>DING Golf</strong>, so I could see exactly what each attacker action looks like in the
+                            logs &mdash; and then write detections that fire on it.
+                        </p>
+                        <p>
+                            The scenario: a customer-service employee is phished, her reused password is validated against
+                            an internal server, the attacker moves laterally over SMB to pull "confidential" files, and a
+                            simulated ransomware step renames demo files and drops a ransom note. A <strong>Wazuh</strong>
+                            SIEM watches both Windows machines the entire time.
+                        </p>
+                        <div class="callout"><p><strong>What makes it a blue-team project:</strong> the attack is the setup.
+                            The deliverable is 18 custom detection rules, File Integrity Monitoring on sensitive folders,
+                            a 9-panel dashboard, and a filtered SOC alert queue that surfaces the critical events.</p></div>
+                        <p>
+                            It's a solo expansion of an earlier team bootcamp project (a hospital ransomware simulation),
+                            rebuilt here with a more polished phishing portal, SMB-based lateral movement, and detection
+                            coverage across every phase.
+                        </p>
+                    </section>
+
+                    <section id="ethics">
+                        <h2>Scope &amp; ethics</h2>
+                        <div class="callout callout--warn">
+                            <p>
+                                Everything ran on an <strong>isolated host-only network</strong> (192.168.56.0/24) with no
+                                route to the internet or any real system. The company, the employee "Sarah Chen," all
+                                credentials, and all "confidential" files are <strong>entirely fictional</strong> and were
+                                created for this lab. Nothing here targets a real person or organization, and this write-up
+                                documents the methodology and the detections, not a reusable toolkit.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="architecture">
+                        <h2>Lab architecture</h2>
+                        <p>Four VMs in Oracle VirtualBox, all on an isolated host-only segment:</p>
+                        <div class="table-wrap"><table>
+                            <thead><tr><th>Machine</th><th>IP</th><th>Role</th></tr></thead>
+                            <tbody>
+                                <tr><td>Kali Linux</td><td>192.168.56.107</td><td>Attacker (Apache/PHP, nmap, crackmapexec, smbclient)</td></tr>
+                                <tr><td>WIN-SARAH-WS</td><td>192.168.56.108</td><td>Victim workstation &middot; Wazuh agent</td></tr>
+                                <tr><td>WIN-DING-SRV</td><td>192.168.56.109</td><td>Company server, SMB shares &middot; Wazuh agent</td></tr>
+                                <tr><td>Wazuh 4.14.7</td><td>192.168.56.110</td><td>SIEM &mdash; manager, indexer, dashboard</td></tr>
+                            </tbody>
+                        </table></div>
+                        <pre><code>  Kali (attacker)              Wazuh SIEM
+  192.168.56.107               192.168.56.110
+        |                            ^  ^
+        |  phishing / SMB            |  | agent telemetry
+        v                            |  |
+  WIN-SARAH-WS  --------------------- '  |
+  192.168.56.108   (workstation)        |
+        \                               |
+         \  SMB lateral movement        |
+          v                             |
+  WIN-DING-SRV  ----------------------- '
+  192.168.56.109   (server, SMB shares)
+
+        host-only network  192.168.56.0/24  (no internet)</code></pre>
+                        <p>
+                            To make the attack <em>visible</em>, I configured the Windows side the way a monitored
+                            environment would be: static IPs and meaningful hostnames, SMB shares for the lateral-movement
+                            target, and &mdash; most importantly &mdash; auditing turned up. I enabled Logon, File Share,
+                            Detailed File Share, File System, Process Creation, and Filtering Platform policies, and set
+                            <strong>SACLs</strong> on the monitored folders so Windows emits Event ID <code>4663</code> on
+                            access. I also removed the default event exclusions from the Wazuh agent config so
+                            <code>4663</code>, <code>5145</code>, and related events actually reached the SIEM.
+                        </p>
+                    </section>
+
+                    <section id="chain">
+                        <h2>The attack chain</h2>
+                        <p>Each stage was built to generate a distinct, detectable footprint:</p>
+                        <ol class="steps">
+                            <li><strong>Phishing</strong>
+                                <p>A custom portal served from Kali imitates a webmail inbox and a branded login page.
+                                   "Sarah" opens it, clicks through, and submits her credentials, which are logged on the
+                                   attacker host. <em>Signal:</em> a credential-submission event from the phishing portal.</p></li>
+                            <li><strong>Credential capture &amp; auto-trigger</strong>
+                                <p>A watcher script monitors the credential log and kicks off the rest of the chain the
+                                   moment a submission lands, so the whole scenario runs hands-off for a clean demo.</p></li>
+                            <li><strong>Network reconnaissance</strong>
+                                <p>From the attacker's view, host and service discovery locate the server and confirm SMB is open.</p>
+                                <pre><code>nbtscan 192.168.56.0/24
+nmap -sV -p 445 192.168.56.109</code></pre></li>
+                            <li><strong>Credential validation</strong>
+                                <p>The phished password is checked against the server over SMB &mdash; the "valid accounts"
+                                   reuse step (<code>crackmapexec</code>), which on the server side looks like a network logon.</p></li>
+                            <li><strong>Lateral movement &amp; exfiltration</strong>
+                                <p>Using the validated credentials, the attacker browses an SMB share and copies "confidential"
+                                   demo files. <em>Signal:</em> remote share access and file reads right after the suspicious logon.</p></li>
+                            <li><strong>Ransomware simulation</strong>
+                                <p>A script renames demo files to <code>.locked</code> on both VMs and drops a ransom note.
+                                   No real encryption and no real data &mdash; the point is the file-change pattern FIM sees.</p></li>
+                        </ol>
+                    </section>
+
+                    <section id="detection">
+                        <h2>Detection engineering &mdash; the core of the project</h2>
+                        <p>
+                            I wrote <strong>18 custom Wazuh rules</strong> mapping to every phase, enrolled both Windows
+                            hosts as agents in a shared <code>CYBERLAB</code> group, and turned on real-time File Integrity
+                            Monitoring (60-second scan plus realtime change detection) over the confidential folders. A
+                            selection of the rules:
+                        </p>
+                        <div class="table-wrap"><table>
+                            <thead><tr><th>Rule</th><th>Level</th><th>Fires on</th><th>Chain stage</th></tr></thead>
+                            <tbody>
+                                <tr><td>101</td><td>12</td><td>Credentials submitted to the phishing portal</td><td>Phishing</td></tr>
+                                <tr><td>102</td><td>4</td><td>SMB network logon detected</td><td>Validation</td></tr>
+                                <tr><td>100101</td><td>8</td><td>Remote SMB share access on the server</td><td>Lateral movement</td></tr>
+                                <tr><td>104</td><td>12</td><td>File access after a suspicious SMB logon</td><td>Exfiltration</td></tr>
+                                <tr><td>110</td><td>10</td><td>SMB brute force &mdash; 5 failed logons in 60s</td><td>Validation</td></tr>
+                                <tr><td>112</td><td>10</td><td>After-hours SMB logon (11pm&ndash;6am)</td><td>Lateral movement</td></tr>
+                                <tr><td>106</td><td>15</td><td><code>.locked</code> file rename detected (FIM)</td><td>Ransomware</td></tr>
+                                <tr><td>107</td><td>15</td><td>Ransom note dropped (FIM)</td><td>Ransomware</td></tr>
+                                <tr><td>113</td><td>15</td><td>Mass file encryption in progress</td><td>Ransomware</td></tr>
+                                <tr><td>108</td><td>15</td><td>Full attack chain confirmed (correlated)</td><td>Impact</td></tr>
+                            </tbody>
+                        </table></div>
+                        <p>
+                            The rules escalate the way an analyst would want them to: a single SMB logon is informational
+                            (level 4), file access <em>after</em> a suspicious logon is a real lead (12), and the file-rename
+                            and ransom-note FIM events are critical (15). Rule 108 is a correlation rule &mdash; it only
+                            fires once the earlier stages have been seen together, which is what turns a pile of alerts into
+                            "this is one incident."
+                        </p>
+                        <p>Two views made it usable as a SOC would use it:</p>
+                        <ul>
+                            <li><strong>DING Golf Security Monitor</strong> &mdash; a 9-panel dashboard showing alerts by severity, by agent, by rule, and over time, so the whole chain is visible at a glance as it unfolds.</li>
+                            <li><strong>Operation DING SOC Queue</strong> &mdash; a saved search filtered to high-severity alerts only, so the critical events aren't buried in logon noise.</li>
+                        </ul>
+                        <p class="muted" style="font-size:0.9rem">Screenshots of the dashboard, the SOC queue, and the FIM alerts firing on both agents are being added to this page.</p>
+                    </section>
+
+                    <section id="attack">
+                        <h2>MITRE ATT&amp;CK mapping</h2>
+                        <div class="table-wrap"><table>
+                            <thead><tr><th>Tactic / Technique</th><th>ID</th><th>Where it shows up</th></tr></thead>
+                            <tbody>
+                                <tr><td>Phishing: Spearphishing Link</td><td>T1566.002</td><td>Credential portal</td></tr>
+                                <tr><td>Valid Accounts</td><td>T1078</td><td>Reusing the phished password on the server</td></tr>
+                                <tr><td>Remote System Discovery</td><td>T1018</td><td>Host discovery on the subnet</td></tr>
+                                <tr><td>Network Service Scanning</td><td>T1046</td><td>SMB/445 scan</td></tr>
+                                <tr><td>Data from Network Shared Drive</td><td>T1039</td><td>SMB file exfiltration</td></tr>
+                                <tr><td>Data Encrypted for Impact (simulated)</td><td>T1486</td><td>File rename + ransom note</td></tr>
+                            </tbody>
+                        </table></div>
+                    </section>
+
+                    <section id="takeaways">
+                        <h2>Takeaways</h2>
+                        <ul>
+                            <li><strong>Detection depends on telemetry.</strong> The hardest part wasn't writing rules, it was making Windows emit the right events &mdash; SACL auditing for <code>4663</code> and removing Wazuh's default exclusions. No log, no detection.</li>
+                            <li><strong>Correlation beats volume.</strong> Any one event here is ambiguous. The high-confidence alert is the <em>sequence</em>: phish &rarr; logon &rarr; file access &rarr; mass rename.</li>
+                            <li><strong>FIM is the ransomware backstop.</strong> When prevention fails, a flood of <code>.locked</code> renames is an unmistakable, high-severity signal.</li>
+                            <li><strong>Building the attack made me a better defender.</strong> Seeing each stage from the attacker's side is what let me write detections that fire on the behavior, not just on a specific IP or filename.</li>
+                        </ul>
+                        <p>
+                            This project ties together the individual skills from my <a href="../labs/index.html">labs</a> &mdash;
+                            the SIEM and detection work, Windows event analysis, and SMB/networking &mdash; into one
+                            end-to-end incident. It's the work I'm most proud of.
+                        </p>
+                    </section>
+
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

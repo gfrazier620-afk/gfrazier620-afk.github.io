@@ -4,393 +4,337 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garret Frazier | Cybersecurity Portfolio</title>
+    <meta name="description" content="Garret Frazier — aspiring SOC analyst and Fullstack Academy cybersecurity graduate. Projects, hands-on labs, and resume.">
+    <meta name="theme-color" content="#0a0e13">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <!-- Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
-
-    <!-- ScrollReveal -->
-    <script src="https://unpkg.com/scrollreveal"></script>
-
-    <!-- GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- NAVBAR -->
-    <nav id="navbar">
-        <div class="logo">GF</div>
-
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" aria-current="page">Home</a></li>
+                <li><a href="projects/index.html">Projects</a></li>
+                <li><a href="labs/index.html">Labs</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="#contact">Contact</a></li>
+            </ul>
         </div>
+    </header>
 
-        <ul class="nav-links" id="nav-links">
-           <li><a href="index.html" class="nav-item">Home</a></li>
-           <li><a href="labs/index.html" class="nav-item">Labs</a></li>
-           <li><a href="projects/index.html" class="nav-item">Projects</a></li>
-           <li><a href="blog/index.html" class="nav-item">Blog</a></li>
-           <li><a href="resume.html" class="nav-item">Resume</a></li>
-        </ul>
-    </nav>
+    <main id="main">
 
-    <!-- HERO -->
-    <section id="home" class="hero">
-
-        <!-- Background layers -->
-        <canvas id="particle-canvas"></canvas>
-        <div class="hero-grid"></div>
-        <div class="hero-radar"></div>
-
-        <div class="hero-inner">
-
-            <!-- LEFT: Operator profile -->
-            <div class="hero-left">
-                <p class="hero-label">/ profile</p>
-                <h1 class="hero-name">Garret Frazier</h1>
-                <h2 class="hero-role">Aspiring SOC Analyst</h2>
-
-                <p class="hero-mission">
-                    Driven cybersecurity professional transitioning from a 20-year career in golf, bringing discipline, focus,
-                    and a calm-under-pressure mindset to SOC operations. Committed to developing strong detection, analysis,
-                    and response capabilities while contributing to a team’s defensive mission.
-                </p>
-
-                <div class="hero-cert-block">
-                    <p class="hero-label">/ certifications</p>
-                    <ul class="hero-cert-list">
-                        <li>CompTIA Security+ — <span class="status-pill status-pill--inprogress">In Progress</span></li>
-                        <li>Cisco Networking Academy: Introduction to Cybersecurity — <span class="status-pill">Completed March 2026</span></li>
-                        <li>Fullstack Academy Cybersecurity Program — <span class="status-pill status-pill--inprogress">Graduating August 2026</span></li>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="container hero-grid">
+                <div>
+                    <span class="eyebrow">Cybersecurity · Blue Team · SOC</span>
+                    <h1>Garret Frazier</h1>
+                    <p class="hero-role">Aspiring SOC Analyst &mdash; currently <strong>Customer Service Representative at PING</strong></p>
+                    <p class="hero-lead">
+                        Fullstack Academy cybersecurity graduate with hands-on work in SIEM, log analysis, network
+                        traffic analysis, and incident response. I spent 20 years in high-pressure, customer-facing
+                        operations in the golf industry &mdash; now I bring that same calm, methodical approach to
+                        detecting and responding to threats.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="projects/index.html">View projects</a>
+                        <a class="btn" href="resume.html">Resume</a>
+                        <a class="btn" href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a>
+                    </div>
+                    <ul class="hero-facts">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                            Irvine, CA &middot; open to relocation
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                            Fullstack Academy, Aug 2026
+                        </li>
                     </ul>
                 </div>
 
-                <div class="hero-cta-row">
-                    <a href="projects/index.html" class="cta-btn ghost-cta">View Projects</a>
-                    <a href="labs/index.html" class="cta-btn ghost-cta">View Labs</a>
-                    <a href="resume.html" class="cta-btn ghost-cta">Download Resume</a>
+                <div class="term" aria-label="Profile summary shown as a terminal">
+                    <div class="term-bar"><i></i><i></i><i></i><span>garret@soc: ~</span></div>
+<pre><span class="p">$</span> whoami
+garret.frazier  <span class="d"># aspiring SOC analyst</span>
+
+<span class="p">$</span> cat current_role.txt
+CSR @ PING  &middot;  HYDRA team  &middot;  Claude team
+
+<span class="p">$</span> ls ~/training
+fullstack-cyber    <span class="ok">[graduated 2026-08]</span>
+cisco-intro-cyber  <span class="ok">[completed 2026-03]</span>
+security-plus      <span class="w">[in progress]</span>
+
+<span class="p">$</span> ls ~/portfolio
+projects/  labs/  resume.pdf
+<span class="p">$</span> <span class="cursor"></span></pre>
                 </div>
             </div>
+        </section>
 
-            <!-- RIGHT: Tactical intelligence panel -->
-            <div class="hero-right">
-                <div class="hero-panel hero-panel--terminal">
-                    <div class="panel-header">
-                        <span class="panel-dot dot-red"></span>
-                        <span class="panel-dot dot-yellow"></span>
-                        <span class="panel-dot dot-green"></span>
-                        <span class="panel-title">/ soc-terminal</span>
+        <!-- STATS -->
+        <div class="container reveal">
+            <div class="stats">
+                <div class="stat"><span class="stat-value">16</span><span class="stat-label">Documented labs</span></div>
+                <div class="stat"><span class="stat-value">40+</span><span class="stat-label">Hands-on labs completed</span></div>
+                <div class="stat"><span class="stat-value">20 yrs</span><span class="stat-label">Client-facing operations</span></div>
+                <div class="stat"><span class="stat-value">2026</span><span class="stat-label">Fullstack Academy grad</span></div>
+            </div>
+        </div>
+
+        <!-- EXPERIENCE -->
+        <section class="section" id="experience">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow">Experience</span>
+                        <h2>Where I am now</h2>
                     </div>
-                    <div class="panel-body terminal-body">
-                        <pre id="terminal-output" class="terminal-output"></pre>
-                        <span class="terminal-cursor" id="terminal-cursor"></span>
-                    </div>
+                    <a class="link-arrow" href="resume.html">Full resume</a>
                 </div>
 
-                <div class="hero-panel-grid">
-                    <div class="hero-panel hero-panel--siem">
-                        <div class="panel-header">
-                            <span class="panel-title">/ siem-overview</span>
-                        </div>
-                        <div class="panel-body siem-body">
-                            <div class="siem-metric">
-                                <span class="metric-label">Events (last 60s)</span>
-                                <span class="metric-value" id="events-count">1,284</span>
+                <div class="card reveal">
+                    <ul class="timeline">
+                        <li class="current">
+                            <div class="role-head">
+                                <p class="role-title">Customer Service Representative <span class="role-org">&middot; PING</span></p>
+                                <span class="role-dates">Jun 2026 &ndash; Present</span>
                             </div>
-                            <div class="siem-metric">
-                                <span class="metric-label">Alerts</span>
-                                <span class="metric-value metric-value--ok">0 critical • 2 medium</span>
+                            <div class="role-body">
+                                <ul>
+                                    <li>Support retail accounts and consumers with order placement, order maintenance, and account issues.</li>
+                                    <li>Work general IT tickets: triage the issue, troubleshoot, and resolve or escalate.</li>
+                                    <li><strong>HYDRA team:</strong> fix malformed XML in Pre-Book app orders so they validate and push through to processing correctly.</li>
+                                    <li><strong>Claude team:</strong> contribute to internal app development.</li>
+                                </ul>
                             </div>
-                            <div class="siem-graph">
-                                <div class="siem-bar"></div>
-                                <div class="siem-bar"></div>
-                                <div class="siem-bar"></div>
-                                <div class="siem-bar"></div>
-                                <div class="siem-bar"></div>
+                        </li>
+                        <li>
+                            <div class="role-head">
+                                <p class="role-title">Golf industry operations <span class="role-org">&middot; Cool Clubs, Santa Ana CC, Oak Creek GC</span></p>
+                                <span class="role-dates">2014 &ndash; 2026</span>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="hero-panel hero-panel--network">
-                        <div class="panel-header">
-                            <span class="panel-title">/ network-map</span>
-                        </div>
-                        <div class="panel-body network-body">
-                            <div class="node node-core"></div>
-                            <div class="node node-a"></div>
-                            <div class="node node-b"></div>
-                            <div class="node node-c"></div>
-                            <svg class="network-lines" viewBox="0 0 200 120" preserveAspectRatio="none">
-                                <line x1="100" y1="60" x2="40" y2="20" />
-                                <line x1="100" y1="60" x2="160" y2="30" />
-                                <line x1="100" y1="60" x2="50" y2="100" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="hero-panel hero-panel--threats">
-                    <div class="panel-header">
-                        <span class="panel-title">/ threat-feed</span>
-                    </div>
-                    <div class="panel-body threat-body">
-                        <div class="threat-ticker" id="threat-ticker">
-                            <span>[CVE-2026-1023] New RCE vulnerability reported in web framework.</span>
-                            <span>Suspicious login attempts blocked from unusual geo-location.</span>
-                            <span>Brute-force activity detected against SSH service — mitigated.</span>
-                            <span>New detection rule deployed: lateral movement pattern v2.4.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="scroll-indicator">
-            <span>SCROLL</span>
-            <div class="arrow">▼</div>
-        </div>
-
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about" class="section section--tactical">
-        <div class="section-inner">
-            <div class="section-header">
-                <p class="section-label">/ about</p>
-                <h2 class="section-title">About Me</h2>
-            </div>
-            <div class="section-grid section-grid--single">
-                <div class="card card--soft">
-                    <p>
-                        I’m transitioning into cybersecurity after a 20-year career as a golf professional—a role that built
-                        my discipline, focus, and ability to perform under pressure.
-                    </p>
-                    <p>
-                        Golf taught me how to analyze performance, adapt quickly, and continuously improve. I now apply that
-                        same mindset to security: understanding systems, identifying weaknesses, and strengthening defenses.
-                    </p>
-                    <p>
-                        I’m actively building hands-on experience in networking, Linux, security fundamentals, and SOC workflows,
-                        with a strong interest in blue team operations, threat detection, and incident response.
-                    </p>
-                    <p>
-                        My goal is to contribute to a security-focused team where I can grow as an analyst, support defensive
-                        operations, and help protect critical systems and data.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- LABS -->
-    <section id="labs" class="section">
-        <div class="section-inner">
-            <div class="section-header">
-                <p class="section-label">/ labs</p>
-                <h2 class="section-title">Hands-On Labs</h2>
-            </div>
-            <div class="section-grid">
-                <div class="card card--lab">
-                    <a class="card card--project" href="labs/siem.html">
-    <p class="card-tag">Blue Team</p>
-    <h3 class="card-title">SIEM Lab</h3>
-    <p class="card-body">Analyze logs, detect threats, and simulate SOC workflows.</p>
-</a>
-                    
-                </div>
-                <div class="card card--lab">
-                    <a class="card card--project" href="labs/wireshark.html">
-    <p class="card-tag">Networking</p>
-    <h3 class="card-title">Wireshark Lab</h3>
-    <p class="card-body">Capture packets and identify suspicious network activity.</p>
-</a>
-                    
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PROJECTS -->
-    <section id="projects" class="section">
-        <div class="section-inner">
-            <div class="section-header">
-                <p class="section-label">/ projects</p>
-                <h2 class="section-title">Projects</h2>
-            </div>
-            <div class="section-grid">
-            <a class="card card--project" href="projects/unit2project.html">
-                <p class="card-tag">Blue Team</p>
-                <h3 class="card-title">Unit 2 – Honeypot & IP Blocking</h3>
-                <p class="card-body">
-                    SOC-style workflow: deploy a Windows OpenSSH honeypot, simulate attacks, analyze logs, and block the attacker.
-                </p>
-            </a>
-
-            <a class="card card--project" href="projects/portfolio-build.html">
-    <p class="card-tag">Web Dev</p>
-    <h3 class="card-title">Cybersecurity Portfolio Build</h3>
-    <p class="card-body">A fully custom SOC‑themed portfolio built with HTML, CSS, and GitHub Pages.</p>
-</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- THREAT ANALYSIS -->
-    <section id="threat-analysis" class="section section--tactical">
-        <div class="section-inner">
-            <div class="section-header">
-                <p class="section-label">/ threat-analysis</p>
-                <h2 class="section-title">Threat Analysis & Notes</h2>
-            </div>
-            <div class="section-grid">
-                <div class="card card--soft">
-                    <h3 class="card-title">Recent CVE Review</h3>
-                    <p class="card-body">
-                        Short writeups on recent vulnerabilities, focusing on impact, exploitation paths, and practical mitigation strategies.
-                    </p>
-                    <a href="#" class="card-link">View Analysis</a>
-                </div>
-                <div class="card card--soft">
-                    <h3 class="card-title">Attack Path Breakdown</h3>
-                    <p class="card-body">
-                        Diagrammed potential attack paths in a small lab environment, mapping how an attacker could move from initial access to impact.
-                    </p>
-                    <a href="#" class="card-link">View Notes</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SKILLS & TOOLS -->
-    <section id="skills-tools" class="section">
-        <div class="section-inner">
-            <div class="section-header">
-                <p class="section-label">/ skills-tools</p>
-                <h2 class="section-title">Skills & Tools</h2>
-            </div>
-            <div class="skills-grid">
-                <div class="skills-column">
-                    <h3 class="skills-title">Core Skills</h3>
-                    <ul class="skills-list">
-                        <li>Security fundamentals & blue team mindset</li>
-                        <li>Log analysis & event correlation</li>
-                        <li>Basic incident response workflow</li>
-                        <li>Linux & command line usage</li>
-                        <li>Networking basics (TCP/IP, ports, protocols)</li>
-                    </ul>
-                </div>
-                <div class="skills-column">
-                    <h3 class="skills-title">Tools & Platforms</h3>
-                    <ul class="skills-list">
-                        <li>SIEM platforms (training labs)</li>
-                        <li>Wireshark & packet capture tools</li>
-                        <li>Virtualization (VMware / VirtualBox)</li>
-                        <li>Git & GitHub</li>
-                        <li>Basic scripting (Python, Bash)</li>
-                    </ul>
-                </div>
-                <div class="skills-column">
-                    <h3 class="skills-title">Learning & Growth</h3>
-                    <ul class="skills-list">
-                        <li>Fullstack Academy Cybersecurity Program</li>
-                        <li>Cisco Networking Academy</li>
-                        <li>CompTIA Security+ preparation</li>
-                        <li>Hands-on labs & home lab practice</li>
-                        <li>Continuous learning & documentation</li>
+                            <div class="role-body">
+                                Master club fitter, golf professional, and operations lead. Troubleshot POS, booking, and
+                                launch-monitor systems; analyzed performance data; and supported 400+ members and $5M+ in
+                                annual event revenue.
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CERTIFICATIONS -->
-    <section id="certifications" class="section section--tactical">
-        <div class="section-inner">
-            <div class="section-header">
-                <p class="section-label">/ certifications</p>
-                <h2 class="section-title">Certifications</h2>
+        <!-- PROJECTS -->
+        <section class="section" id="projects">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow">Projects</span>
+                        <h2>Featured work</h2>
+                        <p>End-to-end write-ups: the environment, what I did, the evidence, and what I'd do next.</p>
+                    </div>
+                    <a class="link-arrow" href="projects/index.html">All projects</a>
+                </div>
+
+                <a class="card feature reveal" href="projects/dinggolf-capstone.html">
+                    <div class="feature-body">
+                        <div class="card-top"><span class="card-kicker">Capstone &middot; Detection Engineering</span></div>
+                        <h3>DING Golf: Detecting a Full Attack Chain with a SIEM</h3>
+                        <p>
+                            Built an isolated four-VM lab, ran a phishing-to-ransomware attack end to end against a
+                            fictional company, and detected every stage with 18 custom Wazuh rules, real-time File
+                            Integrity Monitoring, and a live SOC dashboard.
+                        </p>
+                        <div class="card-foot">
+                            <ul class="tag-list">
+                                <li class="tag">Wazuh SIEM</li><li class="tag">Detection</li><li class="tag">FIM</li><li class="tag">MITRE ATT&amp;CK</li>
+                            </ul>
+                            <span class="card-arrow">&rarr;</span>
+                        </div>
+                    </div>
+                    <div class="feature-aside">
+                        <h4>Deliverables</h4>
+                        <ul>
+                            <li>18 custom Wazuh rules</li>
+                            <li>Real-time FIM on sensitive data</li>
+                            <li>9-panel SOC dashboard</li>
+                            <li>Correlated kill-chain alert</li>
+                            <li>Windows audit tuning</li>
+                        </ul>
+                    </div>
+                </a>
+
+                <div class="grid grid-2" style="margin-top:16px">
+                    <a class="card reveal" href="projects/unit2project.html">
+                        <div class="card-top"><span class="card-kicker">Blue Team &middot; Detection &amp; Response</span></div>
+                        <h3>Securing an SSH Server with a Honeypot</h3>
+                        <p>Deployed a Windows OpenSSH honeypot, attacked it from Kali, traced the source IP through the logs, and blocked it with a firewall rule.</p>
+                        <div class="card-foot">
+                            <ul class="tag-list"><li class="tag">Windows</li><li class="tag">Event Viewer</li><li class="tag">Firewall</li></ul>
+                            <span class="card-arrow">&rarr;</span>
+                        </div>
+                    </a>
+                    <a class="card reveal" href="projects/portfolio-build.html">
+                        <div class="card-top"><span class="card-kicker">Web</span></div>
+                        <h3>This Portfolio</h3>
+                        <p>Hand-built with HTML, CSS, and vanilla JavaScript, no frameworks, deployed on GitHub Pages.</p>
+                        <div class="card-foot">
+                            <ul class="tag-list"><li class="tag">HTML/CSS</li><li class="tag">GitHub Pages</li></ul>
+                            <span class="card-arrow">&rarr;</span>
+                        </div>
+                    </a>
+                </div>
             </div>
-            <div class="section-grid section-grid--single">
-                <div class="card card--soft">
+        </section>
+
+        <!-- LABS -->
+        <section class="section" id="labs">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow">Labs</span>
+                        <h2>Hands-on labs</h2>
+                        <p>Short, practical write-ups covering SIEM, Windows and Linux logging, networking, and IT service workflows.</p>
+                    </div>
+                    <a class="link-arrow" href="labs/index.html">All 16 labs</a>
+                </div>
+
+                <div class="grid">
+                    <a class="card reveal" href="labs/siem.html">
+                        <div class="card-top"><span class="card-kicker">Detection</span></div>
+                        <h3>Detecting Brute-Force Logons in a SIEM</h3>
+                        <p>Hunt Event ID 4625 spikes, pivot on source IP, and turn the search into an alert rule.</p>
+                        <div class="card-foot"><ul class="tag-list"><li class="tag">SIEM</li><li class="tag">T1110</li></ul><span class="card-arrow">&rarr;</span></div>
+                    </a>
+                    <a class="card reveal" href="labs/sentinel.html">
+                        <div class="card-top"><span class="card-kicker">Detection</span></div>
+                        <h3>Microsoft Sentinel &amp; KQL</h3>
+                        <p>Query SecurityEvent with KQL, summarize failed logons, and work an incident end to end.</p>
+                        <div class="card-foot"><ul class="tag-list"><li class="tag">Sentinel</li><li class="tag">KQL</li></ul><span class="card-arrow">&rarr;</span></div>
+                    </a>
+                    <a class="card reveal" href="labs/wireshark.html">
+                        <div class="card-top"><span class="card-kicker">Network</span></div>
+                        <h3>Packet Analysis with Wireshark</h3>
+                        <p>Read handshakes, isolate DNS and HTTP, and spot scans and odd ports in a capture.</p>
+                        <div class="card-foot"><ul class="tag-list"><li class="tag">Wireshark</li><li class="tag">PCAP</li></ul><span class="card-arrow">&rarr;</span></div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section class="section" id="skills">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow">Skills</span>
+                        <h2>Tools &amp; strengths</h2>
+                    </div>
+                </div>
+
+                <div class="skills">
+                    <div class="card reveal">
+                        <h3>Security operations</h3>
+                        <ul class="tag-list">
+                            <li class="tag">Log analysis</li><li class="tag">Threat detection</li><li class="tag">Alert triage</li>
+                            <li class="tag">Incident response</li><li class="tag">Vulnerability scanning</li><li class="tag">MITRE ATT&amp;CK</li>
+                        </ul>
+                    </div>
+                    <div class="card reveal">
+                        <h3>SIEM &amp; analysis</h3>
+                        <ul class="tag-list">
+                            <li class="tag">Splunk (SPL)</li><li class="tag">Microsoft Sentinel (KQL)</li><li class="tag">Wazuh</li><li class="tag">Wireshark</li>
+                            <li class="tag">Windows Event Viewer</li><li class="tag">Nmap</li>
+                        </ul>
+                    </div>
+                    <div class="card reveal">
+                        <h3>Systems &amp; networking</h3>
+                        <ul class="tag-list">
+                            <li class="tag">Windows</li><li class="tag">Linux</li><li class="tag">PowerShell</li><li class="tag">Bash</li>
+                            <li class="tag">TCP/IP</li><li class="tag">DNS</li><li class="tag">DHCP</li><li class="tag">VirtualBox / VMware</li>
+                        </ul>
+                    </div>
+                    <div class="card reveal">
+                        <h3>Workflow &amp; communication</h3>
+                        <ul class="tag-list">
+                            <li class="tag">ServiceNow</li><li class="tag">Jira</li><li class="tag">IT ticketing</li><li class="tag">XML</li>
+                            <li class="tag">Git &amp; GitHub</li><li class="tag">Documentation</li><li class="tag">Customer support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CERTIFICATIONS -->
+        <section class="section" id="certifications">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow">Training</span>
+                        <h2>Certifications &amp; education</h2>
+                    </div>
+                </div>
+
+                <div class="card reveal">
                     <ul class="cert-list">
                         <li>
-                            <span class="cert-name">CompTIA Security+</span>
-                            <span class="cert-status status-pill status-pill--inprogress">In Progress</span>
+                            <span class="cert-name">Cybersecurity Program<span class="cert-issuer">Fullstack Academy</span></span>
+                            <span class="status">Graduated Aug 2026</span>
                         </li>
                         <li>
-                            <span class="cert-name">Cisco Networking Academy: Introduction to Cybersecurity</span>
-                            <span class="cert-status status-pill">Completed March 2026</span>
+                            <span class="cert-name">Introduction to Cybersecurity<span class="cert-issuer">Cisco Networking Academy</span></span>
+                            <span class="status">Completed Mar 2026</span>
                         </li>
                         <li>
-                            <span class="cert-name">Fullstack Academy Cybersecurity Program</span>
-                            <span class="cert-status status-pill status-pill--inprogress">Graduating August 2026</span>
+                            <span class="cert-name">Security+<span class="cert-issuer">CompTIA</span></span>
+                            <span class="status status--progress">In progress</span>
                         </li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- GITHUB ACTIVITY -->
-    <section id="github" class="section">
-        <div class="section-inner">
-            <div class="section-header">
-                <p class="section-label">/ github</p>
-                <h2 class="section-title">GitHub Activity</h2>
-            </div>
-            <div class="section-grid section-grid--single">
-                <div class="card card--soft">
-                    <p class="card-body">
-                        This section can highlight recent commits, security-related repositories, or a contribution graph screenshot.
-                        Link directly to your GitHub profile so recruiters can explore your code and activity.
-                    </p>
-                    <a href="#" class="card-link">View GitHub Profile</a>
+        <!-- CONTACT -->
+        <section class="section" id="contact">
+            <div class="container">
+                <div class="cta reveal">
+                    <span class="eyebrow">Contact</span>
+                    <h2>Let's talk</h2>
+                    <p>I'm looking for SOC analyst and security operations roles. The fastest way to reach me is email or LinkedIn.</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="mailto:gfrazier620@gmail.com">gfrazier620@gmail.com</a>
+                        <a class="btn" href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a>
+                        <a class="btn" href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- BLOG / WRITEUPS -->
-    <section id="blog" class="section section--tactical">
-        <div class="section-inner">
-            <div class="section-header">
-                <p class="section-label">/ blog</p>
-                <h2 class="section-title">Blog & Writeups</h2>
-            </div>
-            <div class="section-grid">
-                <div class="card card--soft">
-                    <h3 class="card-title">Analyzing a Brute-Force Attack Pattern</h3>
-                    <p class="card-body">
-                        A short writeup on identifying brute-force behavior in logs, what stood out, and how you’d respond as an analyst.
-                    </p>
-                    <a href="#" class="card-link">Read Writeup</a>
-                </div>
-                <div class="card card--soft">
-                    <h3 class="card-title">Lessons from Transitioning into Cybersecurity</h3>
-                    <p class="card-body">
-                        Reflections on moving from golf to security, and how mindset, discipline, and practice carry over.
-                    </p>
-                    <a href="#" class="card-link">Read Post</a>
-                </div>
-            </div>
-        </div>
-    </section>
+    </main>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <p class="footer-text">© <span id="year"></span> Garret Frazier — Building a career in cybersecurity.</p>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
         </div>
     </footer>
 
-    <!-- JS -->
     <script src="assets/js/main.js"></script>
 </body>
 </html>

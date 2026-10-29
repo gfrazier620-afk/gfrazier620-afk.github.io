@@ -1,0 +1,9 @@
+# Local dev / tooling
+.claude/
+
+# Capstone source (contains working offensive scripts — keep out of the public site)
+DING GOLF PROJECT/
+
+# Loose screenshots not used by the site
+Screenshot*.png
+wrong-unit-3-assessment.png

@@ -2,54 +2,101 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects | Garret Frazier</title>
+    <meta name="description" content="Cybersecurity projects by Garret Frazier: detection and response write-ups with full evidence.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/styles.css">
-    <script src="https://unpkg.com/scrollreveal"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- NAVBAR -->
-    <nav id="navbar">
-        <div class="logo">GF</div>
-        <ul class="nav-links" id="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="../labs/index.html">Labs</a></li>
-            <li><a href="../projects/index.html">Projects</a></li>
-            <li><a href="../blog/index.html">Blog</a></li>
-            <li><a href="../resume.html">Resume</a></li>
-        </ul>
-    </nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="index.html" aria-current="page">Projects</a></li>
+                <li><a href="../labs/index.html">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-    <!-- PROJECTS SECTION -->
-    <section class="section">
-        <div class="section-inner">
-            <p class="section-label">/ projects</p>
-            <h2 class="section-title">Cybersecurity Projects</h2>
+    <main id="main">
+        <div class="container" style="padding-bottom:96px">
+            <div class="page-head">
+                <span class="eyebrow">Projects</span>
+                <h1>Projects</h1>
+                <p>Longer, end-to-end builds and investigations, documented with the environment, the steps, and the evidence.</p>
+            </div>
 
-            <div class="section-grid">
+            <a class="card feature" href="dinggolf-capstone.html">
+                <div class="feature-body">
+                    <div class="card-top"><span class="card-kicker">Capstone &middot; Detection Engineering</span></div>
+                    <h3>DING Golf: Detecting a Full Attack Chain with a SIEM</h3>
+                    <p>
+                        Built an isolated four-VM lab, ran a phishing-to-ransomware attack end to end against a fictional
+                        company, and detected every stage with 18 custom Wazuh rules, real-time File Integrity Monitoring,
+                        and a live SOC dashboard.
+                    </p>
+                    <div class="card-foot">
+                        <ul class="tag-list">
+                            <li class="tag">Wazuh SIEM</li><li class="tag">Detection</li><li class="tag">FIM</li><li class="tag">MITRE ATT&amp;CK</li>
+                        </ul>
+                        <span class="card-arrow">&rarr;</span>
+                    </div>
+                </div>
+                <div class="feature-aside">
+                    <h4>Deliverables</h4>
+                    <ul>
+                        <li>18 custom Wazuh rules</li>
+                        <li>Real-time FIM on sensitive data</li>
+                        <li>9-panel SOC dashboard</li>
+                        <li>Correlated kill-chain alert</li>
+                        <li>Windows audit tuning</li>
+                    </ul>
+                </div>
+            </a>
 
-                <a class="card card--project" href="unit2project.html">
-    <p class="card-tag">Blue Team</p>
-    <h3 class="card-title">Unit 2 – Honeypot & IP Blocking</h3>
-    <p class="card-body">
-        Full SOC-style workflow: deploy a Windows OpenSSH honeypot, simulate attacks, analyze logs, and block the attacker.
-    </p>
-</a>
-
-<a class="card card--project" href="portfolio-build.html">
-    <p class="card-tag">Web Dev</p>
-    <h3 class="card-title">Cybersecurity Portfolio Build</h3>
-    <p class="card-body">Designed and built a tactical SOC‑themed portfolio with labs, projects, and animations.</p>
-</a>
+            <div class="grid grid-2" style="margin-top:16px">
+                <a class="card" href="unit2project.html">
+                    <div class="card-top"><span class="card-kicker">Blue Team &middot; Detection &amp; Response</span></div>
+                    <h3>Securing an SSH Server with a Honeypot</h3>
+                    <p>Deployed a Windows OpenSSH honeypot, attacked it from Kali, traced the source IP through the logs, and blocked it with a firewall rule.</p>
+                    <div class="card-foot">
+                        <ul class="tag-list"><li class="tag">Windows</li><li class="tag">Event Viewer</li><li class="tag">Firewall</li></ul>
+                        <span class="card-arrow">&rarr;</span>
+                    </div>
+                </a>
+                <a class="card" href="portfolio-build.html">
+                    <div class="card-top"><span class="card-kicker">Web</span></div>
+                    <h3>This Portfolio</h3>
+                    <p>Hand-built with HTML, CSS, and vanilla JavaScript, no frameworks, deployed on GitHub Pages.</p>
+                    <div class="card-foot">
+                        <ul class="tag-list"><li class="tag">HTML/CSS</li><li class="tag">JavaScript</li><li class="tag">GitHub Pages</li></ul>
+                        <span class="card-arrow">&rarr;</span>
+                    </div>
+                </a>
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <p class="footer-text">© <span id="year"></span> Garret Frazier — Cybersecurity Portfolio</p>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
         </div>
     </footer>
 

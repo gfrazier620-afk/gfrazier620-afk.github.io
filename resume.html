@@ -1,221 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Resume – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume | Garret Frazier</title>
+    <meta name="description" content="Resume of Garret Frazier — aspiring SOC analyst, Fullstack Academy cybersecurity graduate.">
+    <meta name="theme-color" content="#0a0e13">
 
-  <!-- Main Portfolio Styles -->
-  <link rel="stylesheet" href="assets/css/styles.css">
-
-  <style>
-    .resume-container {
-      max-width: 1100px;
-      margin: 120px auto 60px;
-      padding: 0 20px;
-    }
-
-    .resume-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .resume-header h1 {
-      margin-bottom: 6px;
-    }
-
-    .resume-header p {
-      opacity: 0.85;
-      margin-bottom: 10px;
-    }
-
-    .download-btn {
-      display: inline-block;
-      padding: 12px 20px;
-      margin-top: 15px;
-      background: rgba(0, 255, 255, 0.1);
-      border: 1px solid var(--accent);
-      border-radius: 4px;
-      color: var(--accent);
-      font-size: 0.95rem;
-      transition: 0.2s ease;
-    }
-
-    .download-btn:hover {
-      background: var(--accent);
-      color: #000;
-    }
-
-    /* ======== HYBRID LAYOUT ======== */
-    .resume-grid {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 40px;
-    }
-
-    @media (max-width: 900px) {
-      .resume-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .resume-section {
-      margin-bottom: 35px;
-    }
-
-    .resume-section h2 {
-      color: var(--accent);
-      margin-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 6px;
-      font-size: 1.2rem;
-    }
-
-    .job {
-      margin-bottom: 22px;
-    }
-
-    .job-title {
-      font-weight: bold;
-      font-size: 1.05rem;
-    }
-
-    .job-meta {
-      font-size: 0.9rem;
-      opacity: 0.8;
-      margin-bottom: 6px;
-    }
-
-    ul {
-      margin-left: 20px;
-    }
-  </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- ======== NAVBAR ======== -->
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links" id="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="labs/index.html">Labs</a></li>
-    <li><a href="projects/index.html">Projects</a></li>
-    <li><a href="blog/index.html">Blog</a></li>
-    <li><a class="active" href="resume.html">Resume</a></li>
-  </ul>
-</nav>
-
-<!-- ======== RESUME CONTENT ======== -->
-<div class="resume-container">
-
-  <div class="resume-header">
-    <h1>Garret Frazier</h1>
-    <p>SOC Analyst</p>
-    <p>(949) 943‑4221 • gfrazier620@gmail.com • Irvine, CA (Open to Relocation)</p>
-    <p>linkedin.com/in/garret-frazier-a40892142</p>
-
-    <a class="download-btn" href="assets/Garret_Frazier_Resume.pdf" download>
-      ⬇ Download PDF Resume
-    </a>
-  </div>
-
-  <!-- ======== HYBRID GRID ======== -->
-  <div class="resume-grid">
-
-    <!-- ======== LEFT COLUMN ======== -->
-    <div>
-
-      <section class="resume-section">
-        <h2>Summary</h2>
-        <p>
-          Transitioning into cybersecurity after two decades as a golf professional, bringing a proven record of
-          high‑pressure decision‑making, technical troubleshooting, and data‑driven analysis. Currently completing the
-          Fullstack Academy Cybersecurity Program with hands‑on experience in Linux, networking, SIEM monitoring,
-          threat detection, and system hardening. Motivated by building a stable future for my family while pursuing a
-          field that challenges me daily.
-        </p>
-      </section>
-
-      <section class="resume-section">
-        <h2>Core Skills</h2>
-        <ul>
-          <li>Threat Detection • Log Analysis • Incident Response Concepts • Vulnerability Assessment</li>
-          <li>Security Monitoring • TCP/IP • DNS • DHCP • Endpoint Security • Access Control</li>
-          <li>Splunk • Sentinel • Wireshark • Linux • Windows • Bash • PowerShell</li>
-          <li>Virtual Machines • ServiceNow • Jira</li>
-        </ul>
-      </section>
-
-      <section class="resume-section">
-        <h2>Certifications</h2>
-        <ul>
-          <li>CompTIA Security+ (In progress, expected August 2026)</li>
-          <li>Cisco Cybersecurity Certificate (March 2026)</li>
-          <li>Leadership Training – IC PREP (August 2021)</li>
-        </ul>
-      </section>
-
-      <section class="resume-section">
-        <h2>Education</h2>
-        <ul>
-          <li><strong>Fullstack Academy – Cybersecurity Program</strong> (March 2026 – Present)</li>
-          <li>Completed 40+ hands‑on labs in Linux, networking, SIEM monitoring, threat detection, and IR.</li>
-          <li>Performed log analysis on 1,000+ event samples, identifying anomalies and security issues.</li>
-          <li>Built and managed multiple VMs for security testing and system hardening.</li>
-          <li>Conducted packet analysis, access control configuration, and vulnerability scanning.</li>
-        </ul>
-      </section>
-
-    </div>
-
-    <!-- ======== RIGHT COLUMN ======== -->
-    <div>
-
-      <section class="resume-section">
-        <h2>Experience</h2>
-
-        <div class="job">
-          <div class="job-title">Master Club Fitter – Cool Clubs</div>
-          <div class="job-meta">Irvine, CA • April 2025 – April 2026</div>
-          <ul>
-            <li>Diagnosed 200+ equipment and technology issues using launch monitors, sensors, and analytic software.</li>
-            <li>Analyzed thousands of performance data points to identify patterns and recommend solutions, contributing to $150,000+ in sales.</li>
-            <li>Delivered clear technical explanations to 150+ clients, improving understanding and decision‑making.</li>
-            <li>Documented fittings and equipment specs with 100% accuracy.</li>
-            <li>Collaborated with internal teams to resolve equipment and software issues, improving workflow efficiency.</li>
-          </ul>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="projects/index.html">Projects</a></li>
+                <li><a href="labs/index.html">Labs</a></li>
+                <li><a href="resume.html" aria-current="page">Resume</a></li>
+                <li><a class="nav-cta" href="index.html#contact">Contact</a></li>
+            </ul>
         </div>
+    </header>
 
-        <div class="job">
-          <div class="job-title">Golf Professional – Santa Ana Country Club</div>
-          <div class="job-meta">Santa Ana, CA • Oct 2024 – Apr 2025</div>
-          <ul>
-            <li>Provided high‑level customer support to 400+ members, including POS and booking software troubleshooting.</li>
-            <li>Managed daily operations for 100–200 players per day, supporting $15,000–$25,000 in daily revenue.</li>
-            <li>Trained 10+ staff members.</li>
-            <li>Documented service issues and escalated technical problems, improving resolution time by 20–30%.</li>
-          </ul>
+    <main id="main">
+        <div class="container">
+
+            <div class="doc-head">
+                <div class="resume-head">
+                    <div>
+                        <span class="eyebrow no-print">Resume</span>
+                        <h1>Garret Frazier</h1>
+                        <p class="doc-lead">Aspiring SOC Analyst &middot; Cybersecurity</p>
+                        <ul class="resume-contact">
+                            <li>Irvine, CA (open to relocation)</li>
+                            <li><a href="mailto:gfrazier620@gmail.com">gfrazier620@gmail.com</a></li>
+                            <li>(949) 943-4221</li>
+                            <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142">linkedin.com/in/garret-frazier-a40892142</a></li>
+                            <li><a href="https://gfrazier620-afk.github.io">gfrazier620-afk.github.io</a></li>
+                        </ul>
+                    </div>
+                    <div class="hero-actions no-print" style="margin:0">
+                        <a class="btn btn-primary" href="assets/Garret_Frazier_Resume.pdf" download>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
+                            Download PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="resume-grid">
+
+                <div>
+                    <section>
+                        <h2>Summary</h2>
+                        <p>
+                            Fullstack Academy cybersecurity graduate with hands-on experience in SIEM monitoring (Splunk,
+                            Microsoft Sentinel), log analysis, packet analysis, vulnerability scanning, and incident response.
+                            Currently a Customer Service Representative at PING, handling IT tickets and fixing XML order data
+                            on the HYDRA team. Brings 20 years of high-pressure, customer-facing operations and technical
+                            troubleshooting from the golf industry, and is looking for an entry-level SOC analyst role.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2>Capstone Project</h2>
+                        <div class="role-body" style="margin-top:0">
+                            <p style="margin-bottom:6px"><strong>DING Golf &mdash; SIEM Detection Lab.</strong> Built an isolated four-VM lab and ran a phishing-to-ransomware attack chain end to end, then detected every stage with a Wazuh SIEM.</p>
+                            <ul>
+                                <li>Authored 18 custom Wazuh detection rules mapped to MITRE ATT&amp;CK, including a correlated kill-chain alert.</li>
+                                <li>Configured Windows audit policy, SACL auditing, and real-time File Integrity Monitoring to generate the needed telemetry.</li>
+                                <li>Built a 9-panel SOC dashboard and a filtered high-severity alert queue.</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2>Experience</h2>
+                        <ul class="timeline">
+                            <li class="current">
+                                <div class="role-head">
+                                    <p class="role-title">Customer Service Representative <span class="role-org">&middot; PING</span></p>
+                                    <span class="role-dates">Jun 2026 &ndash; Present</span>
+                                </div>
+                                <div class="role-body">
+                                    <ul>
+                                        <li>Assist retail accounts and consumers with order placement, order maintenance, and account problems.</li>
+                                        <li>Triage, troubleshoot, and resolve or escalate general IT tickets.</li>
+                                        <li>HYDRA team: diagnose and correct malformed XML in Pre-Book app orders so they validate and push through to processing correctly.</li>
+                                        <li>Claude team: contribute to internal application development.</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="role-head">
+                                    <p class="role-title">Master Club Fitter <span class="role-org">&middot; Cool Clubs, Irvine, CA</span></p>
+                                    <span class="role-dates">Apr 2025 &ndash; Apr 2026</span>
+                                </div>
+                                <div class="role-body">
+                                    <ul>
+                                        <li>Diagnosed 200+ equipment and technology issues using launch monitors, sensors, and analytics software.</li>
+                                        <li>Analyzed thousands of performance data points to find patterns and recommend solutions, contributing to $150,000+ in sales.</li>
+                                        <li>Explained technical findings clearly to 150+ clients and documented every fitting accurately.</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="role-head">
+                                    <p class="role-title">Golf Professional <span class="role-org">&middot; Santa Ana Country Club, Santa Ana, CA</span></p>
+                                    <span class="role-dates">Oct 2024 &ndash; Apr 2025</span>
+                                </div>
+                                <div class="role-body">
+                                    <ul>
+                                        <li>Supported 400+ members, including POS, booking software, and account troubleshooting.</li>
+                                        <li>Documented service issues and escalated technical problems, improving resolution time by an estimated 20&ndash;30%.</li>
+                                        <li>Managed daily operations for 100&ndash;200 players per day and trained 10+ staff.</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="role-head">
+                                    <p class="role-title">1st Assistant Golf Professional / Operations Lead <span class="role-org">&middot; Oak Creek Golf Club, Irvine, CA</span></p>
+                                    <span class="role-dates">Jun 2014 &ndash; Nov 2023</span>
+                                </div>
+                                <div class="role-body">
+                                    <ul>
+                                        <li>Coordinated 200+ tournaments and events a year, supporting $5M+ in annual revenue.</li>
+                                        <li>Troubleshot hundreds of hardware and software issues across POS, scheduling, and operational systems, and documented procedures to keep operations consistent.</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+
+                <aside>
+                    <section>
+                        <h2>Education</h2>
+                        <div class="edu-item">
+                            <strong>Fullstack Academy &mdash; Cybersecurity Program</strong>
+                            <span>Mar 2026 &ndash; Aug 2026 &middot; Graduated Aug 17, 2026</span>
+                            <ul style="margin-top:8px">
+                                <li>40+ hands-on labs in Linux, networking, SIEM, threat detection, and incident response.</li>
+                                <li>Log analysis across 1,000+ event samples to identify anomalies.</li>
+                                <li>Built and hardened virtual machines for security testing.</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2>Certifications</h2>
+                        <div class="edu-item"><strong>CompTIA Security+</strong><span>In progress</span></div>
+                        <div class="edu-item"><strong>Cisco Networking Academy: Introduction to Cybersecurity</strong><span>Mar 2026</span></div>
+                        <div class="edu-item"><strong>Leadership Training &mdash; IC PREP</strong><span>Aug 2021</span></div>
+                    </section>
+
+                    <section>
+                        <h2>Skills</h2>
+                        <h3>Security</h3>
+                        <ul class="tag-list">
+                            <li class="tag">Threat detection</li><li class="tag">Log analysis</li><li class="tag">Incident response</li>
+                            <li class="tag">Vulnerability assessment</li><li class="tag">Access control</li><li class="tag">MITRE ATT&amp;CK</li>
+                        </ul>
+                        <h3>Tools</h3>
+                        <ul class="tag-list">
+                            <li class="tag">Splunk</li><li class="tag">Microsoft Sentinel</li><li class="tag">Wazuh</li><li class="tag">Wireshark</li><li class="tag">Nmap</li>
+                            <li class="tag">Event Viewer</li><li class="tag">ServiceNow</li><li class="tag">Jira</li><li class="tag">Git</li>
+                        </ul>
+                        <h3>Systems</h3>
+                        <ul class="tag-list">
+                            <li class="tag">Windows</li><li class="tag">Linux</li><li class="tag">PowerShell</li><li class="tag">Bash</li>
+                            <li class="tag">TCP/IP</li><li class="tag">DNS</li><li class="tag">DHCP</li><li class="tag">XML</li><li class="tag">Virtual machines</li>
+                        </ul>
+                    </section>
+                </aside>
+
+            </div>
         </div>
+    </main>
 
-        <div class="job">
-          <div class="job-title">1st Assistant Golf Professional / Operations Lead – Oak Creek Golf Club</div>
-          <div class="job-meta">Irvine, CA • Jun 2014 – Nov 2023</div>
-          <ul>
-            <li>Coordinated 200+ tournaments annually, supporting revenue streams exceeding $5M per year.</li>
-            <li>Troubleshot hundreds of hardware/software issues across POS systems and operational tools.</li>
-            <li>Maintained detailed documentation of events and procedures, supporting consistent operations.</li>
-            <li>Facilitated cross‑department communication to resolve operational and technical issues.</li>
-            <li>Delivered instruction to 1,000+ students, contributing to $300,000+ in lesson revenue.</li>
-          </ul>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
         </div>
+    </footer>
 
-      </section>
-
-    </div>
-
-  </div>
-</div>
-
+    <script src="assets/js/main.js"></script>
 </body>
 </html>

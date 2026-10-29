@@ -1,70 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Windows Event Viewer Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    ul { margin-left: 20px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investigating Logons with Windows Event Viewer | Labs | Garret Frazier</title>
+    <meta name="description" content="Filter the Security log, decode 4625 failure codes and logon types, and build a reusable XML custom view.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>Detection & Response</li></ol>
+                <h1>Investigating Logons with Windows Event Viewer</h1>
+                <p class="doc-lead">Before logs ever reach a SIEM, they live in Event Viewer. In this lab I learned to read Windows authentication events at the source: what each field means and how to filter quickly.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">Windows</li><li class="tag">Event Viewer</li><li class="tag">Security log</li><li class="tag">T1078</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Windows 10 / Server</dd></div><div><dt>Tools</dt><dd>eventvwr.msc, XML filters</dd></div><div><dt>Focus</dt><dd>Authentication & account events</dd></div><div><dt>ATT&amp;CK</dt><dd>T1078 Valid Accounts, T1136 Create Account</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#walkthrough">Walkthrough</a></li><li><a href="#reference">Decoder: failure codes & logon types</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>Windows Event Viewer Lab</h1>
-  <p class="subtitle">Investigate authentication events, system logs, and security alerts.</p>
+                <article class="doc">
+<section id="walkthrough">
+<h2>Walkthrough</h2>
+<ol class="steps">
+<li><strong>Open the Security log</strong><p>Run <code>eventvwr.msc</code> &rarr; <em>Windows Logs &rarr; Security</em>. Reading it requires administrator rights.</p></li>
+<li><strong>Filter to the events that matter</strong><p><em>Filter Current Log</em> &rarr; Event IDs: <code>4624,4625,4634,4672,4720,4732,4740</code>.</p></li>
+<li><strong>Read a failed logon (4625) field by field</strong><p>The important fields are <strong>Account Name</strong>, <strong>Logon Type</strong>, <strong>Source Network Address</strong>, and the <strong>Status / Sub Status</strong> code, which tells you <em>why</em> the logon failed.</p></li>
+<li><strong>Build a reusable custom view</strong><p><em>Create Custom View &rarr; XML &rarr; Edit query manually</em>. This one shows only failed network logons:</p><pre><code>&lt;QueryList&gt;
+  &lt;Query Id=&quot;0&quot; Path=&quot;Security&quot;&gt;
+    &lt;Select Path=&quot;Security&quot;&gt;
+      *[System[(EventID=4625)]]
+      and *[EventData[Data[@Name=&#x27;LogonType&#x27;]=&#x27;3&#x27;]]
+    &lt;/Select&gt;
+  &lt;/Query&gt;
+&lt;/QueryList&gt;</code></pre></li>
+<li><strong>Look for persistence after access</strong><p>An attacker who gets in often creates an account (<code>4720</code>) and adds it to Administrators (<code>4732</code>). Those two events close together are a high-priority finding.</p></li>
+<li><strong>Export the evidence</strong><p><em>Save Filtered Log File As</em> &rarr; <code>.evtx</code> to preserve the evidence, or CSV for a quick review.</p></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Use Windows Event Viewer to analyze authentication logs and identify suspicious activity.</p>
-  </section>
+<section id="reference">
+<h2>Decoder: failure codes & logon types</h2>
+<div class="table-wrap"><table><thead><tr><th>4625 Sub Status</th><th>Meaning</th></tr></thead><tbody><tr><td><code>0xC000006A</code></td><td>Correct username, wrong password</td></tr><tr><td><code>0xC0000064</code></td><td>Username does not exist (often enumeration or spraying)</td></tr><tr><td><code>0xC0000234</code></td><td>Account is locked out</td></tr><tr><td><code>0xC0000072</code></td><td>Account is disabled</td></tr><tr><td><code>0xC000006F</code></td><td>Logon outside allowed hours</td></tr></tbody></table></div><div class="table-wrap"><table><thead><tr><th>Logon Type</th><th>Meaning</th></tr></thead><tbody><tr><td>2</td><td>Interactive (at the keyboard)</td></tr><tr><td>3</td><td>Network (SMB, file shares, SSH on Windows)</td></tr><tr><td>5</td><td>Service</td></tr><tr><td>7</td><td>Unlock</td></tr><tr><td>10</td><td>RemoteInteractive (RDP)</td></tr></tbody></table></div>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>Windows Event Viewer</li>
-      <li>Security, System, and Application logs</li>
-    </ul>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li>A lot of <code>0xC0000064</code> (unknown user) failures suggests someone is guessing usernames, not just passwords.</li><li>Logon Type tells you the access path. Type 10 from an external IP deserves attention fast.</li><li>Knowing the raw event makes SIEM queries much easier to write and trust.</li></ul>
+</section>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>Open Event Viewer → Windows Logs → Security.</li>
-      <li>Locate Event ID 4624 (successful logon) and 4625 (failed logon).</li>
-      <li>Identify unusual logon types (Type 3, Type 10).</li>
-      <li>Check timestamps for repeated failures.</li>
-      <li>Document suspicious IPs or usernames.</li>
-    </ul>
-  </section>
+                    <nav class="doc-nav" aria-label="More labs"><a href="sentinel.html"><span>&larr; Previous</span>Microsoft Sentinel & KQL</a><a href="incidentresponse.html"><span>Next &rarr;</span>Incident Response: Working a Compromised Account</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab builds foundational skills in reading Windows logs and identifying authentication anomalies.</p>
-  </section>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 
-</div>
-
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

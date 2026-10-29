@@ -1,71 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DNS Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    ul { margin-left: 20px; }
-    code { color: var(--accent); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS Investigation | Labs | Garret Frazier</title>
+    <meta name="description" content="Query record types with nslookup and dig, inspect the local cache, and recognize DGA and tunneling patterns.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>Networking</li></ol>
+                <h1>DNS Investigation</h1>
+                <p class="doc-lead">Nearly every attack touches DNS: phishing domains, malware callbacks, data exfiltration. I practiced resolving records by hand and learned what malicious DNS looks like.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">DNS</li><li class="tag">dig</li><li class="tag">nslookup</li><li class="tag">T1071.004</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Windows + Linux VMs</dd></div><div><dt>Tools</dt><dd>nslookup, dig, Wireshark</dd></div><div><dt>Focus</dt><dd>Records, resolution, abuse</dd></div><div><dt>ATT&amp;CK</dt><dd>T1071.004 DNS, T1568.002 DGA</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#walkthrough">Walkthrough</a></li><li><a href="#records">Record types</a></li><li><a href="#indicators">What suspicious DNS looks like</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>DNS Lab</h1>
-  <p class="subtitle">Investigate DNS queries, records, and common attack vectors.</p>
+                <article class="doc">
+<section id="walkthrough">
+<h2>Walkthrough</h2>
+<ol class="steps">
+<li><strong>Query common record types</strong><pre><code>nslookup example.com
+nslookup -type=mx example.com
+dig example.com A +short
+dig example.com TXT
+dig -x 8.8.8.8          # reverse lookup</code></pre></li>
+<li><strong>Follow resolution end to end</strong><p><code>+trace</code> walks from the root servers to the TLD to the authoritative server, the whole delegation chain.</p><pre><code>dig example.com +trace</code></pre></li>
+<li><strong>Inspect and clear the local cache</strong><p>The cache shows what a host has recently looked up, which is useful during an investigation.</p><pre><code>ipconfig /displaydns
+ipconfig /flushdns</code></pre></li>
+<li><strong>Check the hosts file</strong><p>Malware sometimes edits it to redirect or block security sites.</p><pre><code>type C:\Windows\System32\drivers\etc\hosts</code></pre></li>
+<li><strong>Look at DNS on the wire</strong><p>In Wireshark: <code>dns</code>, and <code>dns.flags.rcode == 3</code> for failed lookups.</p></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Understand how DNS works by querying records and analyzing DNS traffic.</p>
-  </section>
+<section id="records">
+<h2>Record types</h2>
+<div class="table-wrap"><table><thead><tr><th>Record</th><th>Purpose</th></tr></thead><tbody><tr><td>A / AAAA</td><td>Name &rarr; IPv4 / IPv6</td></tr><tr><td>CNAME</td><td>Alias to another name</td></tr><tr><td>MX</td><td>Mail servers for the domain</td></tr><tr><td>TXT</td><td>SPF, DKIM, verification (also abused for tunneling)</td></tr><tr><td>NS</td><td>Authoritative name servers</td></tr><tr><td>PTR</td><td>IP &rarr; name (reverse)</td></tr></tbody></table></div>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>nslookup / dig</li>
-      <li>Wireshark</li>
-    </ul>
-  </section>
+<section id="indicators">
+<h2>What suspicious DNS looks like</h2>
+<div class="table-wrap"><table><thead><tr><th>Pattern</th><th>Possible cause</th></tr></thead><tbody><tr><td>Long random subdomains (<code>a9x3kq...example.net</code>)</td><td>DNS tunneling or exfiltration</td></tr><tr><td>Bursts of NXDOMAIN to random-looking domains</td><td>Domain generation algorithm (DGA) malware</td></tr><tr><td>High volume of TXT queries from one host</td><td>Tunneling / C2</td></tr><tr><td>Lookalike domains (<code>rnicrosoft.com</code>)</td><td>Phishing / typosquatting</td></tr><tr><td>Newly registered domains</td><td>Phishing infrastructure</td></tr></tbody></table></div>
+</section>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>Run <code>nslookup google.com</code> and review the response.</li>
-      <li>Query A, AAAA, MX, TXT, and NS records.</li>
-      <li>Capture DNS traffic in Wireshark.</li>
-      <li>Identify DNS request/response patterns.</li>
-      <li>Review signs of DNS tunneling or exfiltration.</li>
-    </ul>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li>DNS logs are one of the cheapest, highest-value data sources a SOC can collect.</li><li>One infected host often shows up in DNS before it shows up anywhere else.</li></ul>
+</section>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab builds DNS fundamentals and teaches how attackers abuse DNS channels.</p>
-  </section>
+                    <nav class="doc-nav" aria-label="More labs"><a href="tcpip.html"><span>&larr; Previous</span>TCP/IP Fundamentals for Analysts</a><a href="dhcp.html"><span>Next &rarr;</span>DHCP & Rogue Server Detection</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
-</div>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

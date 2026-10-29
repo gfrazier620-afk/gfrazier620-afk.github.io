@@ -1,71 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Incident Response Concepts Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    ul { margin-left: 20px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Response: Working a Compromised Account | Labs | Garret Frazier</title>
+    <meta name="description" content="Take a simulated account compromise through the NIST lifecycle, from triage and timeline to containment and lessons learned.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>Detection & Response</li></ol>
+                <h1>Incident Response: Working a Compromised Account</h1>
+                <p class="doc-lead">A simulated incident walked through the NIST SP 800-61 lifecycle: an external IP brute-forces a server, logs in, and creates a backdoor admin account. The goal was to practice the order of operations and the documentation, not just the commands.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">NIST 800-61</li><li class="tag">IR</li><li class="tag">PowerShell</li><li class="tag">Documentation</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Simulated Windows server incident</dd></div><div><dt>Framework</dt><dd>NIST SP 800-61</dd></div><div><dt>Focus</dt><dd>Triage, containment, reporting</dd></div><div><dt>ATT&amp;CK</dt><dd>T1110, T1078, T1136.001</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#timeline">Incident timeline</a></li><li><a href="#phases">Walking the NIST phases</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>Incident Response Concepts Lab</h1>
-  <p class="subtitle">Walk through IR phases: preparation, detection, containment, and recovery.</p>
+                <article class="doc">
+<section id="timeline">
+<h2>Incident timeline</h2>
+<p>Reconstructed from the Security log (times relative to first alert):</p><div class="table-wrap"><table><thead><tr><th>Time</th><th>Event</th><th>Detail</th></tr></thead><tbody><tr><td>T+00:00</td><td>4625 &times; many</td><td>Failed logons for <code>administrator</code> from 203.0.113.45, Logon Type 3</td></tr><tr><td>T+00:14</td><td>4624</td><td>Successful logon for <code>svc_backup</code> from the same IP</td></tr><tr><td>T+00:16</td><td>4672</td><td>Special privileges assigned. The account has admin rights</td></tr><tr><td>T+00:19</td><td>4720</td><td>New local account <code>helpdesk2</code> created</td></tr><tr><td>T+00:19</td><td>4732</td><td><code>helpdesk2</code> added to Administrators</td></tr></tbody></table></div>
+</section>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Understand the NIST Incident Response lifecycle and simulate a basic IR workflow.</p>
-  </section>
+<section id="phases">
+<h2>Walking the NIST phases</h2>
+<ol class="steps">
+<li><strong>Preparation</strong><p>Confirm the tooling and access are ready: log retention, an IR contact list, admin access to the host, and a place to record notes and evidence.</p></li>
+<li><strong>Detection &amp; analysis</strong><p>Validate it's a true positive (the success from the attacking IP confirms it), then scope it: which accounts, which hosts, and has the IP touched anything else? Assign severity: <strong>High</strong>, because there's confirmed access plus persistence.</p></li>
+<li><strong>Containment</strong><p>Stop the bleeding first, while keeping evidence intact:</p><pre><code>Disable-LocalUser -Name &quot;svc_backup&quot;
+Disable-LocalUser -Name &quot;helpdesk2&quot;
+New-NetFirewallRule -DisplayName &quot;IR-001 block attacker&quot; `
+    -Direction Inbound -RemoteAddress 203.0.113.45 -Action Block</code></pre></li>
+<li><strong>Eradication</strong><p>Remove the persistence and the way in: delete the rogue account, reset <code>svc_backup</code>'s password, and check for scheduled tasks, services, or Run keys created during the window.</p><pre><code>Remove-LocalUser -Name &quot;helpdesk2&quot;
+Get-ScheduledTask | Where-Object { $_.Date -and [datetime]$_.Date -gt (Get-Date).AddDays(-1) }</code></pre></li>
+<li><strong>Recovery</strong><p>Re-enable service accounts with new credentials, watch the host closely for 48 hours, and confirm no new 4720 or 4732 events appear.</p></li>
+<li><strong>Post-incident activity</strong><p>Write the report: summary, timeline, impact, actions taken, and recommendations. Here they were an account lockout policy, no network logon for service accounts, MFA on remote access, and an alert for 4720 followed by 4732.</p></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>Sample incident report</li>
-      <li>Windows logs</li>
-      <li>Documentation templates</li>
-    </ul>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li><strong>Contain before you eradicate.</strong> Deleting the rogue account first destroys evidence and tips off the attacker.</li><li>The timeline is the backbone of the report. Build it as you go, not after.</li><li>Every incident should leave behind at least one new detection or control.</li></ul>
+</section>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>Review the NIST IR phases: Preparation, Detection, Containment, Eradication, Recovery, Lessons Learned.</li>
-      <li>Analyze a simulated security alert (failed logons, suspicious process, etc.).</li>
-      <li>Document the detection and initial triage.</li>
-      <li>Recommend containment actions (disable account, isolate host).</li>
-      <li>Write a short IR summary report.</li>
-    </ul>
-  </section>
+                    <nav class="doc-nav" aria-label="More labs"><a href="eventviewer.html"><span>&larr; Previous</span>Investigating Logons with Windows Event Viewer</a><a href="vulnerability.html"><span>Next &rarr;</span>Vulnerability Scanning & Prioritization</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab builds foundational IR knowledge and teaches how to structure an investigation.</p>
-  </section>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 
-</div>
-
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

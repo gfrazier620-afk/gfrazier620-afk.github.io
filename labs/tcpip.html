@@ -1,71 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>TCP/IP Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    ul { margin-left: 20px; }
-    code { color: var(--accent); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP/IP Fundamentals for Analysts | Labs | Garret Frazier</title>
+    <meta name="description" content="Map the TCP/IP model to real tools, read connection tables, and tie listening ports back to processes.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>Networking</li></ol>
+                <h1>TCP/IP Fundamentals for Analysts</h1>
+                <p class="doc-lead">Every alert eventually comes down to an IP, a port, and a protocol. This lab connected the textbook model to the commands I'd actually run on a Windows or Linux host.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">TCP/IP</li><li class="tag">Ports</li><li class="tag">netstat</li><li class="tag">Subnetting</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Windows 10 + Ubuntu VMs</dd></div><div><dt>Tools</dt><dd>ipconfig, ip, ping, tracert, netstat, ss</dd></div><div><dt>Focus</dt><dd>Addressing, ports, connections</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#model">The model in practice</a></li><li><a href="#walkthrough">Walkthrough</a></li><li><a href="#ports">Ports worth memorizing</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>TCP/IP Lab</h1>
-  <p class="subtitle">Analyze packets, ports, and protocols used in network communication.</p>
+                <article class="doc">
+<section id="model">
+<h2>The model in practice</h2>
+<div class="table-wrap"><table><thead><tr><th>TCP/IP layer</th><th>OSI equivalent</th><th>What I look at</th></tr></thead><tbody><tr><td>Application</td><td>7&ndash;5</td><td>HTTP, DNS, SSH, SMB payloads</td></tr><tr><td>Transport</td><td>4</td><td>TCP/UDP ports, flags, handshakes</td></tr><tr><td>Internet</td><td>3</td><td>Source and destination IPs, TTL, routing</td></tr><tr><td>Link</td><td>2&ndash;1</td><td>MAC addresses, ARP, VLANs</td></tr></tbody></table></div>
+</section>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Understand how TCP/IP works by analyzing packet flow and identifying protocol behavior.</p>
-  </section>
+<section id="walkthrough">
+<h2>Walkthrough</h2>
+<ol class="steps">
+<li><strong>Identify the host's addressing</strong><p>IP, subnet mask, gateway, and DNS servers. For example, <code>192.168.1.0/24</code> has 254 usable hosts, .1 through .254.</p><pre><code>ipconfig /all          # Windows
+ip addr &amp;&amp; ip route     # Linux</code></pre></li>
+<li><strong>Test reachability and path</strong><pre><code>ping 8.8.8.8
+tracert 8.8.8.8        # Windows
+traceroute 8.8.8.8     # Linux</code></pre></li>
+<li><strong>List listening ports and connections</strong><p>The <code>-o</code> / <code>-p</code> flags show the owning process, which is the key to security triage.</p><pre><code>netstat -ano           # Windows
+ss -tulpn              # Linux</code></pre></li>
+<li><strong>Tie a port to a process</strong><p>An unexpected listener gets traced to its executable.</p><pre><code>Get-Process -Id 4312 | Select-Object Name, Path</code></pre></li>
+<li><strong>Watch the handshake</strong><p>Confirmed the SYN &rarr; SYN/ACK &rarr; ACK setup and FIN/ACK teardown in Wireshark (see the <a href="wireshark.html">Wireshark lab</a>).</p></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>Wireshark</li>
-      <li>Command line tools (ping, tracert, netstat)</li>
-    </ul>
-  </section>
+<section id="ports">
+<h2>Ports worth memorizing</h2>
+<div class="table-wrap"><table><thead><tr><th>Port</th><th>Service</th><th>Security note</th></tr></thead><tbody><tr><td>22</td><td>SSH</td><td>Brute-force target; should be key-only</td></tr><tr><td>23</td><td>Telnet</td><td>Cleartext; should not exist</td></tr><tr><td>53</td><td>DNS</td><td>Also abused for tunneling</td></tr><tr><td>80 / 443</td><td>HTTP / HTTPS</td><td>Most web attacks and C2</td></tr><tr><td>445</td><td>SMB</td><td>Lateral movement, ransomware spread</td></tr><tr><td>3389</td><td>RDP</td><td>Top initial-access vector when exposed</td></tr></tbody></table></div>
+</section>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>Run <code>ping google.com</code> and observe ICMP packets.</li>
-      <li>Use <code>tracert</code> to map network hops.</li>
-      <li>Capture traffic in Wireshark and filter by protocol (TCP, UDP, ICMP).</li>
-      <li>Analyze a TCP 3‑way handshake.</li>
-      <li>Identify common ports (80, 443, 22, 53).</li>
-    </ul>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li>A port number alone isn't proof of anything. Confirm which process owns it.</li><li>Knowing what's <em>normal</em> on a host is what makes the abnormal stand out.</li></ul>
+</section>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab builds core networking knowledge essential for SOC investigations.</p>
-  </section>
+                    <nav class="doc-nav" aria-label="More labs"><a href="wireshark.html"><span>&larr; Previous</span>Packet Analysis with Wireshark</a><a href="dns.html"><span>Next &rarr;</span>DNS Investigation</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
-</div>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

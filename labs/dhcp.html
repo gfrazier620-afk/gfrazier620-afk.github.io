@@ -1,71 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DNS Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    ul { margin-left: 20px; }
-    code { color: var(--accent); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHCP & Rogue Server Detection | Labs | Garret Frazier</title>
+    <meta name="description" content="Capture the DORA exchange, decode DHCP options, and detect a rogue DHCP server on the network.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>Networking</li></ol>
+                <h1>DHCP & Rogue Server Detection</h1>
+                <p class="doc-lead">DHCP hands every device its IP, gateway, and DNS server, so a rogue DHCP server can quietly reroute an entire network. I captured the normal exchange and learned how to spot an impostor.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">DHCP</li><li class="tag">Wireshark</li><li class="tag">Layer 2</li><li class="tag">T1557.003</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Lab VMs on a shared virtual network</dd></div><div><dt>Tools</dt><dd>ipconfig, Wireshark</dd></div><div><dt>Focus</dt><dd>DORA, options, rogue detection</dd></div><div><dt>ATT&amp;CK</dt><dd>T1557.003 DHCP Spoofing</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#walkthrough">Walkthrough</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>DNS Lab</h1>
-  <p class="subtitle">Investigate DNS queries, records, and common attack vectors.</p>
+                <article class="doc">
+<section id="walkthrough">
+<h2>Walkthrough</h2>
+<ol class="steps">
+<li><strong>Trigger a fresh lease</strong><p>Release and renew while capturing in Wireshark.</p><pre><code>ipconfig /release
+ipconfig /renew</code></pre></li>
+<li><strong>Watch DORA</strong><p><strong>D</strong>iscover &rarr; <strong>O</strong>ffer &rarr; <strong>R</strong>equest &rarr; <strong>A</strong>ck, using the filter:</p><pre><code>dhcp</code></pre></li>
+<li><strong>Decode the options</strong><p>Expand the Offer packet and read what the server is handing out.</p><div class="table-wrap"><table><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>53</td><td>Message type (1 Discover, 2 Offer, 3 Request, 5 Ack)</td></tr><tr><td>54</td><td>Server identifier: <em>who</em> is offering</td></tr><tr><td>3</td><td>Router (default gateway)</td></tr><tr><td>6</td><td>DNS servers</td></tr><tr><td>51</td><td>Lease time</td></tr></tbody></table></div></li>
+<li><strong>Detect a rogue server</strong><p>List every Offer and check the server identifier. More than one server answering, or a gateway or DNS server you don't recognize, is the red flag.</p><pre><code>dhcp.option.dhcp == 2</code></pre></li>
+<li><strong>Recognize a failed lease</strong><p>A <code>169.254.x.x</code> (APIPA) address means the client got no answer at all. That can be an outage, or a DHCP starvation attack.</p></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Understand how DNS works by querying records and analyzing DNS traffic.</p>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li>A rogue DHCP server is a man-in-the-middle attack: whoever controls the gateway and DNS controls the traffic.</li><li>On real networks, <strong>DHCP snooping</strong> on switches blocks Offers from untrusted ports.</li><li>Option 54 is the first thing to check when addressing looks wrong.</li></ul>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>nslookup / dig</li>
-      <li>Wireshark</li>
-    </ul>
-  </section>
+                    <nav class="doc-nav" aria-label="More labs"><a href="dns.html"><span>&larr; Previous</span>DNS Investigation</a><a href="powershell.html"><span>Next &rarr;</span>PowerShell for Windows Triage</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>Run <code>nslookup google.com</code> and review the response.</li>
-      <li>Query A, AAAA, MX, TXT, and NS records.</li>
-      <li>Capture DNS traffic in Wireshark.</li>
-      <li>Identify DNS request/response patterns.</li>
-      <li>Review signs of DNS tunneling or exfiltration.</li>
-    </ul>
-  </section>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab builds DNS fundamentals and teaches how attackers abuse DNS channels.</p>
-  </section>
-
-</div>
-
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

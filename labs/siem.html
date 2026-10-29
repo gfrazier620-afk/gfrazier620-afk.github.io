@@ -1,72 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SIEM Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    ul { margin-left: 20px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detecting Brute-Force Logons in a SIEM | Labs | Garret Frazier</title>
+    <meta name="description" content="Hunt Event ID 4625 spikes, pivot on source IP, check for a follow-up success, and turn the search into an alert.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>Detection & Response</li></ol>
+                <h1>Detecting Brute-Force Logons in a SIEM</h1>
+                <p class="doc-lead">A host is generating a burst of failed Windows logons. I worked the alert the way a Tier 1 analyst would: confirm it, find the source, check whether the attacker got in, and turn the search into a repeatable detection.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">SIEM</li><li class="tag">Splunk</li><li class="tag">Windows logs</li><li class="tag">T1110</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Windows Server logs forwarded to Splunk</dd></div><div><dt>Tools</dt><dd>Splunk SPL, Event Viewer</dd></div><div><dt>Focus</dt><dd>Authentication monitoring</dd></div><div><dt>ATT&amp;CK</dt><dd>T1110 Brute Force</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#scenario">Scenario</a></li><li><a href="#walkthrough">Walkthrough</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>SIEM Lab</h1>
-  <p class="subtitle">Analyze logs, detect threats, and simulate SOC workflows.</p>
+                <article class="doc">
+<section id="scenario">
+<h2>Scenario</h2>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Use a SIEM platform to ingest logs, identify suspicious activity, and simulate a real SOC investigation.</p>
-  </section>
+<p>The SOC dashboard shows a jump in failed logons against a Windows server. The questions to answer:
+<strong>Is it an attack? Where is it coming from? Did anything succeed?</strong></p>
+<p>The Windows Security events that matter for this investigation:</p>
+<div class="table-wrap"><table><thead><tr><th>Event ID</th><th>Meaning</th><th>Why it matters</th></tr></thead><tbody><tr><td>4625</td><td>An account failed to log on</td><td>The volume and pattern show the attack</td></tr><tr><td>4624</td><td>An account successfully logged on</td><td>A success after many failures is the critical signal</td></tr><tr><td>4740</td><td>A user account was locked out</td><td>Confirms the lockout policy triggered</td></tr><tr><td>4672</td><td>Special privileges assigned to new logon</td><td>Shows whether an admin-level account was used</td></tr></tbody></table></div>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>Splunk / Sentinel / Elastic (any SIEM)</li>
-      <li>Windows Event Logs</li>
-      <li>Sample attack logs</li>
-    </ul>
-  </section>
+<section id="walkthrough">
+<h2>Walkthrough</h2>
+<ol class="steps">
+<li><strong>Baseline failed logons over time</strong><p>A timechart shows whether this is normal noise or a spike.</p><pre><code>index=wineventlog EventCode=4625
+| timechart span=5m count AS failed_logons</code></pre></li>
+<li><strong>Pivot on the source</strong><p>Group by source IP to see who is generating the failures and which accounts they target.</p><pre><code>index=wineventlog EventCode=4625
+| stats count AS failures dc(Account_Name) AS accounts_tried
+        values(Account_Name) AS accounts BY Source_Network_Address
+| sort - failures</code></pre></li>
+<li><strong>Classify the pattern</strong><p>One IP trying <em>many accounts</em> with a few attempts each is <strong>password spraying</strong> (T1110.003). One IP hammering <em>one account</em> is classic <strong>brute force</strong> (T1110.001). Logon Type 3 (network) or 10 (RDP) shows the access path.</p></li>
+<li><strong>Check for a successful logon from the same source</strong><p>This step decides the severity. A 4624 from the attacking IP turns a blocked attempt into a possible compromise.</p><pre><code>index=wineventlog (EventCode=4625 OR EventCode=4624)
+    Source_Network_Address=&quot;203.0.113.45&quot;
+| sort _time
+| table _time EventCode Account_Name Logon_Type ComputerName</code></pre></li>
+<li><strong>Turn it into a detection</strong><p>I saved the logic as a scheduled alert that runs every 10 minutes and fires when one source exceeds a threshold.</p><pre><code>index=wineventlog EventCode=4625 earliest=-10m
+| stats count AS failures dc(Account_Name) AS accounts BY Source_Network_Address
+| where failures &gt; 10 OR accounts &gt; 5</code></pre></li>
+<li><strong>Document and hand off</strong><p>I recorded the source IP, targeted accounts, time window, whether any logon succeeded, and a recommendation: block the IP at the firewall, reset any account that had a success, and confirm the lockout policy.</p></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>Ingest Windows Security logs into the SIEM.</li>
-      <li>Run searches for failed logons (Event ID 4625).</li>
-      <li>Identify brute‑force patterns using time‑based queries.</li>
-      <li>Correlate events with source IP addresses.</li>
-      <li>Create a detection rule for repeated failed logons.</li>
-      <li>Document findings and recommended actions.</li>
-    </ul>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li>Volume alone isn't the finding. <strong>A success after failures</strong> is what escalates an alert.</li><li><code>dc()</code> (distinct count) separates spraying from brute force in one search.</li><li>Thresholds need tuning against a baseline, or the rule floods the queue with false positives.</li><li>I applied the same pattern hands-on in my <a href="../projects/unit2project.html">SSH honeypot project</a>.</li></ul>
+</section>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab demonstrates how SIEM tools help analysts detect suspicious authentication activity and build detections.</p>
-  </section>
+                    <nav class="doc-nav" aria-label="More labs"><span></span><a href="splunk.html"><span>Next &rarr;</span>Splunk Search Fundamentals</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
-</div>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

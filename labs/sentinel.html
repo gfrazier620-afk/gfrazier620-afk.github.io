@@ -1,76 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Microsoft Sentinel Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    ul { margin-left: 20px; }
-    code { color: var(--accent); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Sentinel & KQL | Labs | Garret Frazier</title>
+    <meta name="description" content="Query SecurityEvent with KQL, correlate failures with successes, build an analytics rule, and work the incident.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>Detection & Response</li></ol>
+                <h1>Microsoft Sentinel & KQL</h1>
+                <p class="doc-lead">I used Microsoft Sentinel's Log Analytics workspace to investigate authentication activity with KQL, then turned the query into an analytics rule and worked the incident it generated.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">Sentinel</li><li class="tag">KQL</li><li class="tag">Azure</li><li class="tag">T1110</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Azure Log Analytics + Sentinel</dd></div><div><dt>Tools</dt><dd>KQL, Incidents, Investigation graph</dd></div><div><dt>Focus</dt><dd>Cloud SIEM investigation</dd></div><div><dt>ATT&amp;CK</dt><dd>T1110 Brute Force, T1078 Valid Accounts</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#walkthrough">Walkthrough</a></li><li><a href="#reference">KQL vs. SPL</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>Microsoft Sentinel Lab</h1>
-  <p class="subtitle">Build detections, analyze incidents, and use KQL queries.</p>
+                <article class="doc">
+<section id="walkthrough">
+<h2>Walkthrough</h2>
+<ol class="steps">
+<li><strong>Explore the table</strong><p>Start small, look at the schema, then filter.</p><pre><code>SecurityEvent
+| where TimeGenerated &gt; ago(24h)
+| take 20</code></pre></li>
+<li><strong>Summarize failed logons</strong><p><code>summarize</code> with <code>bin()</code> buckets the failures per hour by account and source.</p><pre><code>SecurityEvent
+| where TimeGenerated &gt; ago(24h) and EventID == 4625
+| summarize FailedAttempts = count() by Account, IpAddress, bin(TimeGenerated, 1h)
+| order by FailedAttempts desc</code></pre></li>
+<li><strong>Correlate: did a noisy IP ever succeed?</strong><p>A <code>let</code> statement builds the suspect list, then a join against successful logons (4624) finds any overlap.</p><pre><code>let suspects = SecurityEvent
+    | where TimeGenerated &gt; ago(1d) and EventID == 4625
+    | summarize Failures = count() by IpAddress
+    | where Failures &gt; 10;
+SecurityEvent
+| where TimeGenerated &gt; ago(1d) and EventID == 4624
+| join kind=inner suspects on IpAddress
+| project TimeGenerated, Account, Computer, IpAddress, LogonType, Failures</code></pre></li>
+<li><strong>Create an analytics rule</strong><p><em>Analytics &rarr; Create &rarr; Scheduled query rule</em>: the correlation query, run every hour over the last day, alert when results &gt; 0, and map <strong>Account</strong> and <strong>IP</strong> entities so incidents link together.</p></li>
+<li><strong>Work the incident</strong><p>From <em>Incidents</em>: assign it to myself, set the status to Active, open the investigation graph to see the related entities, add comments with findings, and close with a classification (true positive, benign positive, or false positive).</p></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Use Microsoft Sentinel to analyze alerts, run KQL queries, and simulate SOC investigations.</p>
-  </section>
+<section id="reference">
+<h2>KQL vs. SPL</h2>
+<p>Having used both, the concepts map closely:</p><div class="table-wrap"><table><thead><tr><th>Task</th><th>KQL (Sentinel)</th><th>SPL (Splunk)</th></tr></thead><tbody><tr><td>Filter</td><td><code>where</code></td><td><code>search</code> / <code>where</code></td></tr><tr><td>Aggregate</td><td><code>summarize count() by</code></td><td><code>stats count by</code></td></tr><tr><td>Time buckets</td><td><code>bin(TimeGenerated, 1h)</code></td><td><code>bin _time span=1h</code> / <code>timechart</code></td></tr><tr><td>Pick columns</td><td><code>project</code></td><td><code>table</code> / <code>fields</code></td></tr><tr><td>Join</td><td><code>join kind=inner</code></td><td><code>join</code> (or <code>stats</code> by shared field)</td></tr></tbody></table></div>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>Microsoft Sentinel</li>
-      <li>Log Analytics Workspace</li>
-      <li>KQL Query Editor</li>
-    </ul>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li>Entity mapping is what makes Sentinel incidents useful. Without it, alerts don't correlate.</li><li>Always bound queries with <code>TimeGenerated</code>, for speed and cost.</li><li>The closing classification feeds back into tuning, so false positives should be labeled honestly.</li></ul>
+</section>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>Open Sentinel → Logs.</li>
-      <li>Run a basic KQL query:
-        <br><code>SecurityEvent | take 20</code>
-      </li>
-      <li>Filter for failed logons:
-        <br><code>SecurityEvent | where EventID == 4625</code>
-      </li>
-      <li>Investigate an alert from the Incidents panel.</li>
-      <li>Document findings and recommended actions.</li>
-    </ul>
-  </section>
+                    <nav class="doc-nav" aria-label="More labs"><a href="splunk.html"><span>&larr; Previous</span>Splunk Search Fundamentals</a><a href="eventviewer.html"><span>Next &rarr;</span>Investigating Logons with Windows Event Viewer</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab builds real‑world SIEM investigation skills using Microsoft Sentinel.</p>
-  </section>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 
-</div>
-
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

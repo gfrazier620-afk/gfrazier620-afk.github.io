@@ -1,70 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Jira Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    ul { margin-left: 20px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Security Findings in Jira | Labs | Garret Frazier</title>
+    <meta name="description" content="Set up a security project, track vulnerability findings with SLAs, and use JQL to build a remediation dashboard.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>IT Service Mgmt</li></ol>
+                <h1>Tracking Security Findings in Jira</h1>
+                <p class="doc-lead">Findings that aren't tracked don't get fixed. I set up a Jira project to manage the results of my vulnerability scanning lab from discovery to verified fix.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">Jira</li><li class="tag">JQL</li><li class="tag">Kanban</li><li class="tag">Remediation</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Jira Cloud (free)</dd></div><div><dt>Tools</dt><dd>Kanban board, JQL, Dashboards</dd></div><div><dt>Focus</dt><dd>Workflow & remediation tracking</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#walkthrough">Walkthrough</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>Jira Lab</h1>
-  <p class="subtitle">Track tasks, manage workflows, and document security issues.</p>
+                <article class="doc">
+<section id="walkthrough">
+<h2>Walkthrough</h2>
+<ol class="steps">
+<li><strong>Create the project</strong><p>A Kanban project <code>SEC</code> with the workflow <em>To Do &rarr; In Progress &rarr; In Review (rescan) &rarr; Done</em>.</p></li>
+<li><strong>Log each finding as an issue</strong><p>One issue per finding from the <a href="vulnerability.html">vulnerability lab</a>, with the affected asset, CVE, severity, evidence, and the fix. Label <code>vulnerability</code>.</p></li>
+<li><strong>Set due dates by severity</strong><p>Remediation SLAs: Critical 7 days, High 30, Medium 90. The due date makes overdue work visible.</p></li>
+<li><strong>Query with JQL</strong><pre><code>project = SEC AND labels = vulnerability
+  AND priority in (Highest, High)
+  AND statusCategory != Done
+ORDER BY duedate ASC</code></pre></li>
+<li><strong>Build a dashboard</strong><p>Gadgets for open findings by priority, overdue issues (<code>duedate &lt; now() AND resolution = Unresolved</code>), and created-vs-resolved over time.</p></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Learn how to use Jira for tracking tasks, documenting incidents, and managing workflows.</p>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li>The <em>In Review</em> column is the rescan step. Nothing moves to Done on someone's word alone.</li><li>JQL makes a backlog searchable, and searchable is reportable.</li><li>Clear tickets and clear status reporting are a big part of the analyst job.</li></ul>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>Jira Cloud / Jira Server</li>
-      <li>Kanban or Scrum board</li>
-    </ul>
-  </section>
+                    <nav class="doc-nav" aria-label="More labs"><a href="servicenow.html"><span>&larr; Previous</span>ServiceNow Incident Handling</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>Create a new issue (Task, Bug, or Incident).</li>
-      <li>Assign it to a user and set priority.</li>
-      <li>Move the issue across workflow stages (To Do → In Progress → Done).</li>
-      <li>Add comments and attach documentation.</li>
-      <li>Close the issue and review the activity log.</li>
-    </ul>
-  </section>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab builds workflow and documentation skills used in SOC and IT teams.</p>
-  </section>
-
-</div>
-
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

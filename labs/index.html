@@ -2,138 +2,154 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Labs | Garret Frazier</title>
+    <meta name="description" content="Hands-on cybersecurity labs: SIEM, Splunk, Sentinel, Wireshark, Windows and Linux triage, and IT service management.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/styles.css">
-    <script src="https://unpkg.com/scrollreveal"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- NAVBAR -->
-    <nav id="navbar">
-        <div class="logo">GF</div>
-        <ul class="nav-links" id="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="../labs/index.html">Labs</a></li>
-            <li><a href="../projects/index.html">Projects</a></li>
-            <li><a href="../blog/index.html">Blog</a></li>
-            <li><a href="../resume.html">Resume</a></li>
-        </ul>
-    </nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-    <!-- LABS SECTION -->
-    <section class="section">
-        <div class="section-inner">
-            <p class="section-label">/ labs</p>
-            <h2 class="section-title">Hands-On Labs</h2>
+    <main id="main">
+        <div class="container">
+            <div class="page-head">
+                <span class="eyebrow">Labs</span>
+                <h1>Hands-on labs</h1>
+                <p>Practical write-ups from my Fullstack Academy coursework and home lab. Each one covers the scenario,
+                   the commands and queries I used, what to look for, and what I took away.</p>
+            </div>
 
-            <div class="section-grid">
+            <div class="filters" role="group" aria-label="Filter labs"><button class="filter-btn" data-filter="all" aria-pressed="true">All</button><button class="filter-btn" data-filter="detection" aria-pressed="false">Detection & Response</button><button class="filter-btn" data-filter="network" aria-pressed="false">Networking</button><button class="filter-btn" data-filter="systems" aria-pressed="false">Systems</button><button class="filter-btn" data-filter="itsm" aria-pressed="false">IT Service Mgmt</button></div>
 
-                <a class="card card--project" href="siem.html">
-    <p class="card-tag">Blue Team</p>
-    <h3 class="card-title">SIEM Lab</h3>
-    <p class="card-body">Analyze security events, detect anomalies, and build SOC workflows.</p>
-</a>
-
-<a class="card card--project" href="eventviewer.html">
-    <p class="card-tag">Windows</p>
-    <h3 class="card-title">Windows Event Viewer Lab</h3>
-    <p class="card-body">Investigate authentication events, system logs, and security alerts.</p>
-</a>
-
-<a class="card card--project" href="splunk.html">
-    <p class="card-tag">SIEM</p>
-    <h3 class="card-title">Splunk Lab</h3>
-    <p class="card-body">Search, filter, and visualize log data using Splunk queries.</p>
-</a>
-
-<a class="card card--project" href="vulnerability.html">
-    <p class="card-tag">Security</p>
-    <h3 class="card-title">Vulnerability Lab</h3>
-    <p class="card-body">Scan systems, identify weaknesses, and interpret vulnerability reports.</p>
-</a>
-
-<a class="card card--project" href="incidentresponse.html">
-    <p class="card-tag">Blue Team</p>
-    <h3 class="card-title">Incident Response Concepts</h3>
-    <p class="card-body">Walk through IR phases: preparation, detection, containment, and recovery.</p>
-</a>
-
-<a class="card card--project" href="tcpip.html">
-    <p class="card-tag">Networking</p>
-    <h3 class="card-title">TCP/IP Lab</h3>
-    <p class="card-body">Analyze packets, ports, and protocols used in network communication.</p>
-</a>
-
-<a class="card card--project" href="dns.html">
-    <p class="card-tag">Networking</p>
-    <h3 class="card-title">DNS Lab</h3>
-    <p class="card-body">Investigate DNS queries, records, and common attack vectors.</p>
-</a>
-
-<a class="card card--project" href="dhcp.html">
-    <p class="card-tag">Networking</p>
-    <h3 class="card-title">DHCP Lab</h3>
-    <p class="card-body">Explore IP leasing, DHCP logs, and rogue DHCP detection.</p>
-</a>
-
-<a class="card card--project" href="accesscontrol.html">
-    <p class="card-tag">Security</p>
-    <h3 class="card-title">Access Control Lab</h3>
-    <p class="card-body">Configure permissions, groups, and least-privilege access models.</p>
-</a>
-
-<a class="card card--project" href="sentinel.html">
-    <p class="card-tag">Cloud</p>
-    <h3 class="card-title">Microsoft Sentinel Lab</h3>
-    <p class="card-body">Build detections, analyze incidents, and use KQL queries.</p>
-</a>
-
-<a class="card card--project" href="wireshark.html">
-    <p class="card-tag">Networking</p>
-    <h3 class="card-title">Wireshark Lab</h3>
-    <p class="card-body">Capture and analyze network traffic to identify suspicious activity.</p>
-</a>
-
-<a class="card card--project" href="powershell.html">
-    <p class="card-tag">Windows</p>
-    <h3 class="card-title">PowerShell Lab</h3>
-    <p class="card-body">Run system commands, gather logs, and automate tasks.</p>
-</a>
-
-<a class="card card--project" href="linux.html">
-    <p class="card-tag">Linux</p>
-    <h3 class="card-title">Linux Commands Lab</h3>
-    <p class="card-body">Master essential Linux commands for SOC and sysadmin work.</p>
-</a>
-
-<a class="card card--project" href="vm.html">
-    <p class="card-tag">Systems</p>
-    <h3 class="card-title">Virtual Machine Lab</h3>
-    <p class="card-body">Deploy, snapshot, and manage VMs for testing and analysis.</p>
-</a>
-
-<a class="card card--project" href="servicenow.html">
-    <p class="card-tag">ITSM</p>
-    <h3 class="card-title">ServiceNow Lab</h3>
-    <p class="card-body">Work with tickets, incidents, and workflow automation.</p>
-</a>
-
-<a class="card card--project" href="jira.html">
-    <p class="card-tag">ITSM</p>
-    <h3 class="card-title">Jira Lab</h3>
-    <p class="card-body">Track tasks, manage workflows, and document security issues.</p>
-</a>
-
-                <!-- Add more labs here -->
+            <div class="grid" style="padding-bottom:96px">
+                <a class="card" href="siem.html" data-category="detection">
+                    <div class="card-top"><span class="card-kicker">Detection & Response</span></div>
+                    <h3>Detecting Brute-Force Logons in a SIEM</h3>
+                    <p>Hunt Event ID 4625 spikes, pivot on source IP, check for a follow-up success, and turn the search into an alert.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">SIEM</li><li class="tag">Splunk</li><li class="tag">Windows logs</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="splunk.html" data-category="detection">
+                    <div class="card-top"><span class="card-kicker">Detection & Response</span></div>
+                    <h3>Splunk Search Fundamentals</h3>
+                    <p>Ingest web logs, write SPL searches, find a scanning IP, and build a dashboard panel.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">Splunk</li><li class="tag">SPL</li><li class="tag">Dashboards</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="sentinel.html" data-category="detection">
+                    <div class="card-top"><span class="card-kicker">Detection & Response</span></div>
+                    <h3>Microsoft Sentinel & KQL</h3>
+                    <p>Query SecurityEvent with KQL, correlate failures with successes, build an analytics rule, and work the incident.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">Sentinel</li><li class="tag">KQL</li><li class="tag">Azure</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="eventviewer.html" data-category="detection">
+                    <div class="card-top"><span class="card-kicker">Detection & Response</span></div>
+                    <h3>Investigating Logons with Windows Event Viewer</h3>
+                    <p>Filter the Security log, decode 4625 failure codes and logon types, and build a reusable XML custom view.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">Windows</li><li class="tag">Event Viewer</li><li class="tag">Security log</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="incidentresponse.html" data-category="detection">
+                    <div class="card-top"><span class="card-kicker">Detection & Response</span></div>
+                    <h3>Incident Response: Working a Compromised Account</h3>
+                    <p>Take a simulated account compromise through the NIST lifecycle, from triage and timeline to containment and lessons learned.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">NIST 800-61</li><li class="tag">IR</li><li class="tag">PowerShell</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="vulnerability.html" data-category="detection">
+                    <div class="card-top"><span class="card-kicker">Detection & Response</span></div>
+                    <h3>Vulnerability Scanning & Prioritization</h3>
+                    <p>Discover hosts with Nmap, scan with Nessus, and prioritize findings by severity, exploitability, and exposure.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">Nmap</li><li class="tag">Nessus</li><li class="tag">CVSS</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="wireshark.html" data-category="network">
+                    <div class="card-top"><span class="card-kicker">Networking</span></div>
+                    <h3>Packet Analysis with Wireshark</h3>
+                    <p>Read handshakes, isolate DNS and HTTP, follow streams, and spot port scans and cleartext credentials.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">Wireshark</li><li class="tag">PCAP</li><li class="tag">TCP/IP</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="tcpip.html" data-category="network">
+                    <div class="card-top"><span class="card-kicker">Networking</span></div>
+                    <h3>TCP/IP Fundamentals for Analysts</h3>
+                    <p>Map the TCP/IP model to real tools, read connection tables, and tie listening ports back to processes.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">TCP/IP</li><li class="tag">Ports</li><li class="tag">netstat</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="dns.html" data-category="network">
+                    <div class="card-top"><span class="card-kicker">Networking</span></div>
+                    <h3>DNS Investigation</h3>
+                    <p>Query record types with nslookup and dig, inspect the local cache, and recognize DGA and tunneling patterns.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">DNS</li><li class="tag">dig</li><li class="tag">nslookup</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="dhcp.html" data-category="network">
+                    <div class="card-top"><span class="card-kicker">Networking</span></div>
+                    <h3>DHCP & Rogue Server Detection</h3>
+                    <p>Capture the DORA exchange, decode DHCP options, and detect a rogue DHCP server on the network.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">DHCP</li><li class="tag">Wireshark</li><li class="tag">Layer 2</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="powershell.html" data-category="systems">
+                    <div class="card-top"><span class="card-kicker">Systems</span></div>
+                    <h3>PowerShell for Windows Triage</h3>
+                    <p>Pull processes with command lines, parse failed logons, map connections, and check common persistence spots.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">PowerShell</li><li class="tag">Windows</li><li class="tag">Triage</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="linux.html" data-category="systems">
+                    <div class="card-top"><span class="card-kicker">Systems</span></div>
+                    <h3>Linux Command Line for Investigations</h3>
+                    <p>Parse auth.log for SSH brute force, review users, processes, and listeners, and hunt for persistence.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">Linux</li><li class="tag">Bash</li><li class="tag">auth.log</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="accesscontrol.html" data-category="systems">
+                    <div class="card-top"><span class="card-kicker">Systems</span></div>
+                    <h3>Access Control & Least Privilege</h3>
+                    <p>Build role-based groups, set NTFS and Linux permissions, and verify least privilege by testing as each user.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">RBAC</li><li class="tag">NTFS</li><li class="tag">Linux perms</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="vm.html" data-category="systems">
+                    <div class="card-top"><span class="card-kicker">Systems</span></div>
+                    <h3>Building an Isolated Security Home Lab</h3>
+                    <p>Stand up Kali, Windows, and vulnerable targets in VirtualBox with the right network modes and snapshot discipline.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">VirtualBox</li><li class="tag">Kali</li><li class="tag">Networking</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="servicenow.html" data-category="itsm">
+                    <div class="card-top"><span class="card-kicker">IT Service Mgmt</span></div>
+                    <h3>ServiceNow Incident Handling</h3>
+                    <p>Log, prioritize, assign, and resolve a security incident ticket using impact &times; urgency and clean documentation.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">ServiceNow</li><li class="tag">ITSM</li><li class="tag">ITIL</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
+                <a class="card" href="jira.html" data-category="itsm">
+                    <div class="card-top"><span class="card-kicker">IT Service Mgmt</span></div>
+                    <h3>Tracking Security Findings in Jira</h3>
+                    <p>Set up a security project, track vulnerability findings with SLAs, and use JQL to build a remediation dashboard.</p>
+                    <div class="card-foot"><ul class="tag-list"><li class="tag">Jira</li><li class="tag">JQL</li><li class="tag">Kanban</li></ul><span class="card-arrow">&rarr;</span></div>
+                </a>
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <p class="footer-text">© <span id="year"></span> Garret Frazier — Cybersecurity Portfolio</p>
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
         </div>
     </footer>
 

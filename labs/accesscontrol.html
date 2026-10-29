@@ -1,71 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Access Control Lab – Garret Frazier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <style>
-    .lab-container { max-width: 900px; margin: 120px auto; padding: 0 20px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--accent); }
-    .lab-section { margin-bottom: 40px; }
-    .lab-section h2 { color: var(--accent); margin-bottom: 10px; }
-    ul { margin-left: 20px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Control & Least Privilege | Labs | Garret Frazier</title>
+    <meta name="description" content="Build role-based groups, set NTFS and Linux permissions, and verify least privilege by testing as each user.">
+    <meta name="theme-color" content="#0a0e13">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-<nav id="navbar">
-  <div class="logo">GF</div>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a class="active" href="index.html">Labs</a></li>
-    <li><a href="../projects/index.html">Projects</a></li>
-    <li><a href="../blog/index.html">Blog</a></li>
-    <li><a href="../resume.html">Resume</a></li>
-  </ul>
-</nav>
+    <header class="site-nav">
+        <div class="container">
+            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html">Projects</a></li>
+                <li><a href="index.html" aria-current="page">Labs</a></li>
+                <li><a href="../resume.html">Resume</a></li>
+                <li><a class="nav-cta" href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
 
-<div class="lab-container">
+    <main id="main">
+        <div class="container">
+            <div class="doc-head">
+                <ol class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Labs</a></li><li>Systems</li></ol>
+                <h1>Access Control & Least Privilege</h1>
+                <p class="doc-lead">Most breaches get worse because accounts had more access than they needed. I built a small role-based permission model on both Windows and Linux, then tested it from each user's point of view.</p>
+                <ul class="tag-list" style="margin-bottom:28px"><li class="tag">RBAC</li><li class="tag">NTFS</li><li class="tag">Linux perms</li><li class="tag">Least privilege</li></ul>
+                <dl class="doc-meta"><div><dt>Environment</dt><dd>Windows 10 + Ubuntu VMs</dd></div><div><dt>Tools</dt><dd>PowerShell, icacls, chmod/chown</dd></div><div><dt>Focus</dt><dd>RBAC, permissions, auditing</dd></div></dl>
+            </div>
 
-  <a class="back-btn" href="index.html">← Back to Labs</a>
+            <div class="doc-layout">
+                <nav class="toc" aria-label="On this page">
+                    <h2>On this page</h2>
+                    <ol><li><a href="#concepts">Models</a></li><li><a href="#windows">Windows: role-based NTFS permissions</a></li><li><a href="#linux">Linux: group permissions</a></li><li><a href="#audit">Auditing access changes</a></li><li><a href="#takeaways">Key takeaways</a></li></ol>
+                </nav>
 
-  <h1>Access Control Lab</h1>
-  <p class="subtitle">Configure permissions, groups, and least‑privilege access models.</p>
+                <article class="doc">
+<section id="concepts">
+<h2>Models</h2>
+<div class="table-wrap"><table><thead><tr><th>Model</th><th>Who decides access</th><th>Example</th></tr></thead><tbody><tr><td>DAC</td><td>The resource owner</td><td>NTFS / Linux file permissions</td></tr><tr><td>RBAC</td><td>The user's role or group</td><td>"Finance" group can edit finance share</td></tr><tr><td>MAC</td><td>System-enforced labels</td><td>SELinux, classified systems</td></tr></tbody></table></div>
+</section>
 
-  <section class="lab-section">
-    <h2>Objective</h2>
-    <p>Understand access control concepts by configuring user permissions and enforcing least privilege.</p>
-  </section>
+<section id="windows">
+<h2>Windows: role-based NTFS permissions</h2>
+<ol class="steps">
+<li><strong>Create users and a role group</strong><pre><code>New-LocalGroup -Name &quot;Finance&quot;
+New-LocalUser -Name &quot;jdoe&quot; -Password (Read-Host -AsSecureString)
+Add-LocalGroupMember -Group &quot;Finance&quot; -Member &quot;jdoe&quot;</code></pre></li>
+<li><strong>Lock the folder to the role</strong><p>Remove inherited permissions, then grant Modify to Finance only. (OI)(CI) applies it to files and subfolders.</p><pre><code>icacls C:\Finance /inheritance:r
+icacls C:\Finance /grant &quot;Administrators:(OI)(CI)F&quot; &quot;Finance:(OI)(CI)M&quot;
+icacls C:\Finance</code></pre></li>
+<li><strong>Verify as each user</strong><p>Signed in as a Finance member (access works) and a non-member (access denied).</p></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Tools Used</h2>
-    <ul>
-      <li>Windows Local Users & Groups</li>
-      <li>Linux file permissions</li>
-      <li>Active Directory (optional)</li>
-    </ul>
-  </section>
+<section id="linux">
+<h2>Linux: group permissions</h2>
+<ol class="steps">
+<li><strong>Group, ownership, and mode</strong><p><code>2770</code> sets the setgid bit, so new files inherit the <em>finance</em> group, and gives no access to others.</p><pre><code>sudo groupadd finance
+sudo usermod -aG finance jdoe
+sudo mkdir /srv/finance
+sudo chown root:finance /srv/finance
+sudo chmod 2770 /srv/finance</code></pre></li>
+<li><strong>Test from both sides</strong><pre><code>sudo -u jdoe touch /srv/finance/report.txt     # allowed
+sudo -u guest ls /srv/finance                  # Permission denied</code></pre></li>
+</ol>
+</section>
 
-  <section class="lab-section">
-    <h2>Steps</h2>
-    <ul>
-      <li>Create a new user account.</li>
-      <li>Add the user to a specific group.</li>
-      <li>Modify folder permissions (Read, Write, Execute).</li>
-      <li>Test access before and after permission changes.</li>
-      <li>Document least‑privilege recommendations.</li>
-    </ul>
-  </section>
+<section id="audit">
+<h2>Auditing access changes</h2>
+<p>Changes to group membership are security events worth alerting on:</p><div class="table-wrap"><table><thead><tr><th>Event ID</th><th>Meaning</th></tr></thead><tbody><tr><td>4732</td><td>Member added to a security-enabled local group</td></tr><tr><td>4728</td><td>Member added to a security-enabled global group (domain)</td></tr><tr><td>4663</td><td>Object access attempt (requires auditing on the folder)</td></tr></tbody></table></div>
+</section>
 
-  <section class="lab-section">
-    <h2>Summary</h2>
-    <p>This lab builds foundational access control knowledge used in identity and security operations.</p>
-  </section>
+<section id="takeaways">
+<h2>Key takeaways</h2>
+<ul><li>Assign permissions to <strong>groups</strong>, never to individual users. It's the only way access reviews stay manageable.</li><li>Always test access as the user, not as the admin who configured it.</li></ul>
+</section>
 
-</div>
+                    <nav class="doc-nav" aria-label="More labs"><a href="linux.html"><span>&larr; Previous</span>Linux Command Line for Investigations</a><a href="vm.html"><span>Next &rarr;</span>Building an Isolated Security Home Lab</a></nav>
+                </article>
+            </div>
+        </div>
+    </main>
 
+    <footer class="site-footer">
+        <div class="container">
+            <p style="margin:0">&copy; <span data-year>2026</span> Garret Frazier</p>
+            <ul class="footer-links">
+                <li><a href="mailto:gfrazier620@gmail.com">Email</a></li>
+                <li><a href="https://www.linkedin.com/in/garret-frazier-a40892142" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://github.com/gfrazier620-afk" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>
