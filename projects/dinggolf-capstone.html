@@ -10,13 +10,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DING Golf SIEM &amp; Attack-Chain Lab | Projects | Garret Frazier">
+    <meta property="og:description" content="Capstone security lab: a full phishing-to-ransomware attack chain in an isolated VM network, detected end to end with 18 custom Wazuh SIEM rules and a 9-panel SOC dashboard.">
+    <meta property="og:image" content="https://gfrazier620-afk.github.io/assets/img/og.png">
+    <meta property="og:url" content="https://gfrazier620-afk.github.io/projects/dinggolf-capstone.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://gfrazier620-afk.github.io/assets/img/og.png">
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-nav">
         <div class="container">
-            <a class="brand" href="../index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <a class="brand" href="../index.html"><img class="brand-mark" src="../assets/img/logo.svg" alt="" width="34" height="34">Garret Frazier</a>
             <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
             </button>
@@ -59,7 +67,7 @@
                         <li><a href="#overview">Overview</a></li>
                         <li><a href="#ethics">Scope &amp; ethics</a></li>
                         <li><a href="#architecture">Lab architecture</a></li>
-                        <li><a href="#chain">The attack chain</a></li>
+                        <li><a href="#simulator">Run the chain</a></li>
                         <li><a href="#detection">Detection engineering</a></li>
                         <li><a href="#attack">ATT&amp;CK mapping</a></li>
                         <li><a href="#takeaways">Takeaways</a></li>
@@ -142,31 +150,26 @@
                         </p>
                     </section>
 
-                    <section id="chain">
-                        <h2>The attack chain</h2>
-                        <p>Each stage was built to generate a distinct, detectable footprint:</p>
-                        <ol class="steps">
-                            <li><strong>Phishing</strong>
-                                <p>A custom portal served from Kali imitates a webmail inbox and a branded login page.
-                                   "Sarah" opens it, clicks through, and submits her credentials, which are logged on the
-                                   attacker host. <em>Signal:</em> a credential-submission event from the phishing portal.</p></li>
-                            <li><strong>Credential capture &amp; auto-trigger</strong>
-                                <p>A watcher script monitors the credential log and kicks off the rest of the chain the
-                                   moment a submission lands, so the whole scenario runs hands-off for a clean demo.</p></li>
-                            <li><strong>Network reconnaissance</strong>
-                                <p>From the attacker's view, host and service discovery locate the server and confirm SMB is open.</p>
-                                <pre><code>nbtscan 192.168.56.0/24
-nmap -sV -p 445 192.168.56.109</code></pre></li>
-                            <li><strong>Credential validation</strong>
-                                <p>The phished password is checked against the server over SMB &mdash; the "valid accounts"
-                                   reuse step (<code>crackmapexec</code>), which on the server side looks like a network logon.</p></li>
-                            <li><strong>Lateral movement &amp; exfiltration</strong>
-                                <p>Using the validated credentials, the attacker browses an SMB share and copies "confidential"
-                                   demo files. <em>Signal:</em> remote share access and file reads right after the suspicious logon.</p></li>
-                            <li><strong>Ransomware simulation</strong>
-                                <p>A script renames demo files to <code>.locked</code> on both VMs and drops a ransom note.
-                                   No real encryption and no real data &mdash; the point is the file-change pattern FIM sees.</p></li>
-                        </ol>
+                    <section id="simulator">
+                        <h2>Run the attack chain</h2>
+                        <p>
+                            Step through the kill chain one stage at a time, or hit run and watch it play out. Each stage
+                            shows the attacker action, the Wazuh rule that catches it, the ATT&amp;CK technique, and what I'd
+                            do as the analyst.
+                        </p>
+                        <div class="sim-head">
+                            <button class="run-btn" id="run-sim">&#9654;&nbsp; Run simulation</button>
+                            <span class="run-note">// 6 stages &middot; detections fire in sequence</span>
+                        </div>
+                        <div class="sim-grid">
+                            <ol class="chain-rail" id="chain-rail" aria-label="Attack stages"></ol>
+                            <div class="chain-detail" id="chain-detail"></div>
+                        </div>
+                        <noscript>
+                            <p class="muted">Enable JavaScript for the interactive walkthrough. The chain runs: phishing &rarr;
+                            recon &rarr; credential validation &rarr; lateral movement &rarr; exfiltration &rarr; ransomware,
+                            each mapped to a Wazuh detection rule and a MITRE ATT&amp;CK technique.</p>
+                        </noscript>
                     </section>
 
                     <section id="detection">
@@ -199,6 +202,17 @@ nmap -sV -p 445 192.168.56.109</code></pre></li>
                             fires once the earlier stages have been seen together, which is what turns a pile of alerts into
                             "this is one incident."
                         </p>
+                        <h3>A rule, in full</h3>
+                        <p>Rule 106 is the ransomware backstop &mdash; it fires on the File Integrity Monitoring event when any file is renamed to <code>.locked</code>:</p>
+                        <pre><code>&lt;group name="dinggolf,ransomware,"&gt;
+  &lt;rule id="106" level="15"&gt;
+    &lt;if_sid&gt;550,554&lt;/if_sid&gt;            &lt;!-- FIM file add/modify --&gt;
+    &lt;field name="file"&gt;\.locked$&lt;/field&gt;
+    &lt;description&gt;CRITICAL: file encrypted (.locked) - possible ransomware&lt;/description&gt;
+    &lt;mitre&gt;&lt;id&gt;T1486&lt;/id&gt;&lt;/mitre&gt;
+  &lt;/rule&gt;
+&lt;/group&gt;</code></pre>
+
                         <p>Two views made it usable as a SOC would use it:</p>
                         <ul>
                             <li><strong>DING Golf Security Monitor</strong> &mdash; a 9-panel dashboard showing alerts by severity, by agent, by rule, and over time, so the whole chain is visible at a glance as it unfolds.</li>
@@ -253,6 +267,7 @@ nmap -sV -p 445 192.168.56.109</code></pre></li>
         </div>
     </footer>
 
+    <script src="../assets/js/soc-data.js"></script>
     <script src="../assets/js/main.js"></script>
 </body>
 </html>

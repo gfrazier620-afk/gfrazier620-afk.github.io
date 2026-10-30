@@ -11,13 +11,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Garret Frazier | Cybersecurity Portfolio">
+    <meta property="og:description" content="Garret Frazier — aspiring SOC analyst and Fullstack Academy cybersecurity graduate. Projects, hands-on labs, and resume.">
+    <meta property="og:image" content="https://gfrazier620-afk.github.io/assets/img/og.png">
+    <meta property="og:url" content="https://gfrazier620-afk.github.io/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://gfrazier620-afk.github.io/assets/img/og.png">
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-nav">
         <div class="container">
-            <a class="brand" href="index.html"><span class="brand-mark">GF</span>Garret Frazier</a>
+            <a class="brand" href="index.html"><img class="brand-mark" src="assets/img/logo.svg" alt="" width="34" height="34">Garret Frazier</a>
             <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
             </button>
@@ -63,23 +71,19 @@
                     </ul>
                 </div>
 
-                <div class="term" aria-label="Profile summary shown as a terminal">
-                    <div class="term-bar"><i></i><i></i><i></i><span>garret@soc: ~</span></div>
-<pre><span class="p">$</span> whoami
-garret.frazier  <span class="d"># aspiring SOC analyst</span>
-
-<span class="p">$</span> cat current_role.txt
-CSR @ PING  &middot;  HYDRA team  &middot;  Claude team
-
-<span class="p">$</span> ls ~/training
-fullstack-cyber    <span class="ok">[graduated 2026-08]</span>
-cisco-intro-cyber  <span class="ok">[completed 2026-03]</span>
-security-plus      <span class="w">[in progress]</span>
-
-<span class="p">$</span> ls ~/portfolio
-projects/  labs/  resume.pdf
-<span class="p">$</span> <span class="cursor"></span></pre>
+                <div class="soc-console" aria-label="SOC console showing capstone lab detections">
+                    <div class="console-bar">
+                        <span class="live"></span> <b>DING&nbsp;GOLF&nbsp;SOC</b> <span>// lab demo</span>
+                        <span class="spacer">4 agents &middot; 18 rules</span>
+                    </div>
+                    <div class="console-feed" id="soc-feed"></div>
+                    <div class="console-detail" id="soc-detail">
+                        <span class="console-hint">Streaming detections from my capstone lab&hellip; click an alert to investigate.</span>
+                    </div>
                 </div>
+                <p class="muted" style="font-family:var(--font-mono);font-size:0.72rem;margin:10px 2px 0">
+                    &rarr; <a href="projects/dinggolf-capstone.html">Run the full attack chain</a> on the capstone page.
+                </p>
             </div>
         </section>
 
@@ -335,6 +339,7 @@ projects/  labs/  resume.pdf
         </div>
     </footer>
 
+    <script src="assets/js/soc-data.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>
