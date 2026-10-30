@@ -22,6 +22,61 @@ if (navToggle && navLinks) {
     });
 }
 
+/* ---------- Operator theme: CRT sweep + boot sequence ---------- */
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (!reduceMotion) {
+    const sweep = document.createElement("div");
+    sweep.className = "crt-sweep";
+    document.body.appendChild(sweep);
+}
+
+(function bootSequence() {
+    if (reduceMotion) return;
+    try {
+        if (sessionStorage.getItem("gf-booted")) return;
+        sessionStorage.setItem("gf-booted", "1");
+    } catch (e) { /* private mode: still play once this load */ }
+
+    const lines = [
+        "[ BOOT ] garret-frazier // security portfolio v2.0",
+        "[  <span class='ok'>OK</span>  ] loading operator profile ........ done",
+        "[  <span class='ok'>OK</span>  ] mounting /projects /labs /resume .. done",
+        "[  <span class='ok'>OK</span>  ] establishing SIEM uplink ......... done",
+        "[ <span class='ok'>READY</span> ] welcome, operator"
+    ];
+
+    const boot = document.createElement("div");
+    boot.className = "boot";
+    boot.innerHTML = '<div class="boot-inner" id="boot-text"></div><div class="skip">press any key to skip</div>';
+    document.body.appendChild(boot);
+
+    const screen = boot.querySelector("#boot-text");
+    let i = 0;
+    let done = false;
+
+    function finish() {
+        if (done) return;
+        done = true;
+        boot.classList.add("hide");
+        setTimeout(() => boot.remove(), 450);
+        window.removeEventListener("keydown", finish);
+        window.removeEventListener("pointerdown", finish);
+    }
+
+    function next() {
+        if (done) return;
+        if (i >= lines.length) { setTimeout(finish, 550); return; }
+        screen.innerHTML += (i ? "\n" : "") + lines[i];
+        i++;
+        setTimeout(next, 230);
+    }
+
+    window.addEventListener("keydown", finish);
+    window.addEventListener("pointerdown", finish);
+    setTimeout(next, 260);
+})();
+
 /* ---------- Footer year ---------- */
 document.querySelectorAll("[data-year]").forEach(el => {
     el.textContent = new Date().getFullYear();
